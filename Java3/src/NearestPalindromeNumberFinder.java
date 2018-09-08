@@ -19,12 +19,12 @@ public class NearestPalindromeNumberFinder {
                 if (i == mid) {
                     if (number == checkNumber) {
                         System.out.println("palindrome number before " + checkNumber + " is " + temp);
+                        System.out.println("here " + checkNumber + " is also palindrome");
                         palin = 1;
                     }
                     if (number > checkNumber) {
                         if (palin == 0) {
                             System.out.println("palindrome number before " + checkNumber + " is " + temp);
-                            System.out.println("here " + checkNumber + " is also palindrome");
                         }
                         System.out.println("palindrome number after " + checkNumber + " is " + number);
                         check = 1;
