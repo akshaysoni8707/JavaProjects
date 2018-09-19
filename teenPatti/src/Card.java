@@ -93,26 +93,17 @@ public class Card {
     }
 
     boolean sameNumber(Card card[]) {
-        if (card[0].singleNumber == card[1].singleNumber && card[1].singleNumber == card[2].singleNumber)
-            return true;
-        else
-            return false;
+        return card[0].singleNumber == card[1].singleNumber && card[1].singleNumber == card[2].singleNumber;
     }
 
     boolean sameType(Card card[]) {
-        if (card[0].singleCard == card[1].singleCard && card[1].singleCard == card[2].singleCard)
-            return true;
-        else
-            return false;
+        return card[0].singleCard == card[1].singleCard && card[1].singleCard == card[2].singleCard;
     }
 
     boolean sequenceChecker(Card card[]) {
         Card[] newCards = sortNumbers(card);
         System.out.println(Arrays.toString(newCards));
-        if (newCards[0].singleNumber == newCards[1].singleNumber - 1 && newCards[1].singleNumber == newCards[2].singleNumber - 1)
-            return true;
-        else
-            return false;
+        return newCards[0].singleNumber == newCards[1].singleNumber - 1 && newCards[1].singleNumber == newCards[2].singleNumber - 1;
     }
 
     Card[] sortNumbers(Card card[]) {
