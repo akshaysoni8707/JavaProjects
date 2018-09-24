@@ -1,21 +1,30 @@
-import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Card {
+    final int SIZE = 3;
+    String message = "";
+    Card[] winner = new Card[3];
+    Scanner scanner = new Scanner(System.in);
     char type[] = {'\u2660', '\u2665', '\u2666', '\u2663'}, singleCard;
     int numbers[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}, singleNumber;
     int randomCheck[] = new int[9];
     String name = "Player";
+    int index = 0;
     Random random = new Random();
-    Card totalCard[] = new Card[9], computerCard[] = new Card[3], userCard[] = new Card[3], akkiCard[] = new Card[3];
+    Card totalCard[] = new Card[9];
+    Card playerCard[][];
 
     public Card() {
+        randomCheck = new int[SIZE * 2];
+        totalCard = new Card[(SIZE * 2)];
+        playerCard = new Card[SIZE - 1][SIZE];
     }
 
-    public Card(char type, int numbers, String name) {
-        this.singleCard = type;
-        this.singleNumber = numbers;
-        this.name = name;
+    public Card(int size) {
+        randomCheck = new int[SIZE * size];
+        totalCard = new Card[(SIZE * size)];
+        playerCard = new Card[size][SIZE];
     }
 
     public Card(char type, int numbers) {
@@ -24,32 +33,33 @@ public class Card {
     }
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int numberOfPlayers = 0;
         long start = System.currentTimeMillis();
-        Card card = new Card();
+        System.out.println("Enter the players you want to play with?");
+        numberOfPlayers = scanner.nextInt();
+        Card card = new Card(numberOfPlayers);
         card.randomCard();
-        System.out.println(card.maxCard(card.computerCard).toString());
-        System.out.println(card.maxCard(card.userCard).toString());
-        System.out.println(card.maxCard(card.akkiCard).toString());
-        card.display(card.computerCard, "computer");
-        card.display(card.userCard, "user");
-        card.display(card.akkiCard, "Akki");
-        System.out.println("Same number Comp " + card.sameNumber(card.computerCard));
-        System.out.println("Same number user " + card.sameNumber(card.userCard));
-        System.out.println("Same number Akki " + card.sameNumber(card.akkiCard));
-        System.out.println("Same type Comp " + card.sameType(card.computerCard));
-        System.out.println("Same type user " + card.sameType(card.userCard));
-        System.out.println("Same type akki " + card.sameType(card.akkiCard));
-        System.out.println("Sequence comp " + card.sequenceChecker(card.computerCard));
-        System.out.println("Sequence user " + card.sequenceChecker(card.userCard));
-        System.out.println("Sequence akki " + card.sequenceChecker(card.akkiCard));
-        card.checkWin(card.computerCard, card.userCard);
-        card.checkWin(card.akkiCard, card.userCard);
+        for (int y = 0; y < numberOfPlayers; y++) {
+            System.out.println(" player " + (y + 1) + " Enter your name :");
+            card.display(card.playerCard[y], scanner.next());
+        }
+        card.winner = card.playerCard[0];
+        System.out.println(card.winner[0].name);
+        for (int y = 1; y < numberOfPlayers; y++) {
+            card.winner = card.checkWin(card.playerCard[y], card.winner);
+            System.out.println(card.maxCard(card.winner) + " " + card.message);
+        }
+        System.out.println("Final winner " + card.maxCard(card.winner) + " " + card.message);
         long end = System.currentTimeMillis();
         System.out.println("start :" + start + " end :" + end + " time taken : " + (end - start));
     }
 
     void display(Card[] cards, String name) {
         int i = 0;
+        cards[i].name = name;
+        cards[i + 1].name = name;
+        cards[i + 2].name = name;
         System.out.println("---------------------------------------");
         System.out.println(" _____\t _____ \t _____");
         System.out.println("|" + numberToString(cards[i].singleNumber) + "   |\t" + "|" + numberToString(cards[i + 1].singleNumber) + "   |\t" + "|" + numberToString(cards[i + 2].singleNumber) + "   " + "|");
@@ -62,34 +72,32 @@ public class Card {
     }
 
     void randomCard() {
-        int i = 0;
-        randomCheck[0] = 0;
-        randomCheck[1] = 1;
-        randomCheck[2] = 2;
+        int i = 0, secondIndex = 0;
+       /* randomCheck[0] = 0;
+        randomCheck[1] = 24;
+        randomCheck[2] = 49;*/
         for (; i < randomCheck.length; i++) {
             int r = random.nextInt(51);
             for (int x : randomCheck) {
                 if (r == x)
                     r = random.nextInt(51);
             }
-
-            if (i > 2) randomCheck[i] = r;
-            else r = randomCheck[i];
-
+            randomCheck[i] = r;
             totalCard[i] = new Card(typeCapture(r), getNumber(r));
-            if (i < 3) {
-                totalCard[i].setName("computercard");
-                computerCard[i] = totalCard[i];
-            } else if (i < 6) {
-                totalCard[i].setName("usercard");
-                userCard[i - 3] = totalCard[i];
-            } else {
-                totalCard[i].setName("Akkicard");
-                akkiCard[i - 6] = totalCard[i];
+        }
+        for (int z = 0; z < i; ++z) {
+            if (index < playerCard.length) {
+                if (z % 3 == 0 && z > 0) {
+                    index++;
+                    secondIndex = 0;
+                    if (index == playerCard.length) break;
+                }
+                playerCard[index][secondIndex] = totalCard[z];
+                secondIndex++;
             }
         }
-
     }
+
 
     public String getName() {
         return name;
@@ -179,7 +187,6 @@ public class Card {
 
     boolean sequenceChecker(Card card[]) {
         Card[] newCards = sortNumbers(card);
-        //  System.out.println(Arrays.toString(newCards));
         return newCards[0].singleNumber == newCards[1].singleNumber - 1 && newCards[1].singleNumber == newCards[2].singleNumber - 1;
     }
 
@@ -197,94 +204,120 @@ public class Card {
         return card;
     }
 
-    void checkWin(Card card1[], Card[] card2) {
+    Card[] checkWin(Card card1[], Card card2[]) {
         ///Same number
         if (sameNumber(card1)) {
             if (sameNumber(card2)) {
                 if (maxCard(card1).singleNumber > maxCard(card2).singleNumber) {
-                    System.out.println(card1[0].getName() + " wins ,Same numbers ");
+                    message = card1[0].name + " wins ,Same numbers ";
+                    return card1;
                 } else {
-                    System.out.println(card2[0].getName() + " wins ,Same numbers ");
+                    message = card2[0].name + " wins ,Same numbers ";
+                    return card2;
                 }
             } else {
-                System.out.println(card1[0].getName() + " wins ,Same numbers ");
+                message = card1[0].name + " wins ,Same numbers ";
+                return card1;
             }
         } else if (sameNumber(card2)) {
-            System.out.println(card2[0].getName() + " wins ,Same numbers ");
+            message = card2[0].name + " wins ,Same numbers ";
+            return card2;
         }
         ///Same Card Type and Numbers in Sequence
         else if (sameType(card1) && sequenceChecker(card1)) {
             if (sameType(card2) && sequenceChecker(card2)) {
                 if (maxCard(card1).singleNumber > maxCard(card2).singleNumber) {
-                    System.out.println(card1[0].getName() + " wins Same Card Type and Numbers in Sequence");
+                    message = card1[0].name + " wins Same Card Type and Numbers in Sequence";
+                    return card2;
                 } else if (maxCard(card1).singleNumber < maxCard(card2).singleNumber) {
-                    System.out.println(card2[0].getName() + " wins Same Card Type and Numbers in Sequence");
+                    message = card2[0].name + " wins Same Card Type and Numbers in Sequence";
+                    return card2;
                 } else {
                     if (maxCard(card1) == maxTypeCheck(maxCard(card1), maxCard(card2))) {
-                        System.out.println(card1[0].getName() + " wins Same Card Type and Numbers in Sequence");
+                        message = card1[0].name + " wins Same Card Type and Numbers in Sequence";
+                        return card1;
                     } else {
-                        System.out.println(card2[0].getName() + " wins Same Card Type and Numbers in Sequence");
+                        message = card2[0].name + " wins Same Card Type and Numbers in Sequence";
+                        return card2;
                     }
                 }
             } else {
-                System.out.println(card1[0].getName() + " wins Same Card Type and Numbers in Sequence");
+                message = card1[0].name + " wins Same Card Type and Numbers in Sequence";
+                return card1;
             }
         } else if (sameType(card2) && sequenceChecker(card2)) {
-            System.out.println(card2[0].getName() + " wins Same Card Type and Numbers in Sequence");
+            message = card2[0].name + " wins Same Card Type and Numbers in Sequence";
+            return card2;
         }
         ///Sequence of Numbers
         else if (sequenceChecker(card1)) {
             if (sequenceChecker(card2)) {
                 if (maxCard(card1).singleNumber > maxCard(card2).singleNumber) {
-                    System.out.println(card1[0].getName() + " wins Sequence of numbers");
+                    message = card1[0].name + " wins Sequence of numbers";
+                    return card1;
                 } else if (maxCard(card1).singleNumber < maxCard(card2).singleNumber) {
-                    System.out.println(card2[0].getName() + " wins Sequence of numbers");
+                    message = card2[0].name + " wins Sequence of numbers";
+                    return card2;
                 } else {
                     if (maxCard(card1) == maxTypeCheck(maxCard(card1), maxCard(card2))) {
-                        System.out.println(card1[0].getName() + " wins Sequence of numbers");
+                        message = card1[0].name + " wins Sequence of numbers";
+                        return card1;
                     } else {
-                        System.out.println(card2[0].getName() + " wins Sequence of numbers");
+                        message = card2[0].name + " wins Sequence of numbers";
+                        return card2;
                     }
                 }
             } else {
-                System.out.println(card1[0].getName() + " wins Sequence of numbers");
+                message = card1[0].name + " wins Sequence of numbers";
+                return card1;
             }
         } else if (sequenceChecker(card2)) {
-            System.out.println(card2[0].getName() + " wins Sequence of numbers");
+            message = card2[0].name + " wins Sequence of numbers";
+            return card2;
         }
         ///All Cards Same type
         else if (sameType(card1) && sameType(card2) && maxCard(card1).singleCard == maxCard(card2).singleCard) {
             if (maxCard(card1).singleNumber > maxCard(card2).singleNumber) {
-                System.out.println(card1[0].getName() + " wins high card number,all cards are same");
+                message = card1[0].name + " wins high card number,all cards are same";
+                return card1;
             } else {
-                System.out.println(card2[0].getName() + " wins high card number,all cards are same");
+                message = card2[0].name + " wins high card number,all cards are same";
+                return card2;
             }
         }
         ///Same Card type
         else if (sameType(card1)) {
             if (sameType(card2)) {
                 if (maxCard(card1) == maxTypeCheck(maxCard(card1), maxCard(card2))) {
-                    System.out.println(card1[0].getName() + " wins Same cards");
+                    message = card1[0].name + " wins Same cards";
+                    return card1;
                 } else {
-                    System.out.println(card2[0].getName() + " wins Same cards");
+                    message = card2[0].name + " wins Same cards";
+                    return card2;
                 }
             } else {
-                System.out.println(card1[0].getName() + " wins Same cards");
+                message = card1[0].name + " wins Same cards";
+                return card1;
             }
         } else if (sameType(card2)) {
-            System.out.println(card2[0].getName() + " wins Same cards");
+            message = card2[0].name + " wins Same cards";
+            return card2;
         }
         ///High card
         else {
             if (maxCard(card1).singleNumber > maxCard(card2).singleNumber) {
-                System.out.println(card1[0].getName() + " wins by high card");
+                message = card1[0].name + " wins by high card";
+                return card1;
             } else if (maxCard(card1).singleNumber < maxCard(card2).singleNumber) {
-                System.out.println(card2[0].getName() + " wins by high card");
+                message = card2[0].name + " wins by high card";
+                return card2;
             } else {
                 if (maxCard(card1) == maxTypeCheck(maxCard(card1), maxCard(card2))) {
-                    System.out.println(card1[0].getName() + " wins by high card");
+                    message = card1[0].name + " wins by high card";
+                    return card1;
                 } else {
-                    System.out.println(card2[0].getName() + " wins by high card");
+                    message = card2[0].name + " wins by high card";
+                    return card2;
                 }
             }
         }
