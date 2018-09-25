@@ -2,39 +2,38 @@ import java.util.Random;
 import java.util.Scanner;
 
 class Card {
-    final int SIZE = 3;
-    String message = "";
-    Card[] winner = new Card[3];
-    Scanner scanner = new Scanner(System.in);
-    char type[] = {'\u2660', '\u2665', '\u2666', '\u2663'}, singleCard;
-    int numbers[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}, singleNumber;
-    int randomCheck[] = new int[9];
-    String name = "Player";
-    int index = 0;
-    Random random = new Random();
-    Card totalCard[] = new Card[9];
-    Card playerCard[][];
+    private final int SIZE = 3;
+    private String message = "";
+    private Card[] winner = new Card[3];
+    private char type[] = {'\u2660', '\u2665', '\u2666', '\u2663'}, singleCard;
+    private int numbers[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}, singleNumber;
+    private int randomCheck[] = new int[9];
+    private String name = "Player";
+    private int index = 0;
+    private Random random = new Random();
+    private Card totalCard[] = new Card[9];
+    private Card playerCard[][];
 
-    public Card() {
+    Card() {
         randomCheck = new int[SIZE * 2];
         totalCard = new Card[(SIZE * 2)];
         playerCard = new Card[SIZE - 1][SIZE];
     }
 
-    public Card(int size) {
+    private Card(int size) {
         randomCheck = new int[SIZE * size];
         totalCard = new Card[(SIZE * size)];
         playerCard = new Card[size][SIZE];
     }
 
-    public Card(char type, int numbers) {
+    private Card(char type, int numbers) {
         this.singleCard = type;
         this.singleNumber = numbers;
     }
 
     void gamePlay() {
         Scanner scanner = new Scanner(System.in);
-        int numberOfPlayers = 0;
+        int numberOfPlayers;
         System.out.println("Enter the players you want to play with?");
         numberOfPlayers = scanner.nextInt();
         Card card = new Card(numberOfPlayers);
@@ -52,7 +51,7 @@ class Card {
         System.out.println("Final winner is " + card.winner[0].name + " ," + card.message + " ," + card.winner[0].name + "'s high card is " + card.maxCard(card.winner));
     }
 
-    void display(Card[] cards, String name) {
+    private void display(Card[] cards, String name) {
         int i = 0;
         cards[i].name = name;
         cards[i + 1].name = name;
@@ -68,8 +67,8 @@ class Card {
         System.out.println("---------------------------------------");
     }
 
-    void randomCard() {
-        int i = 0, secondIndex = 0;
+    private void randomCard() {
+        int i = 0;
        /* randomCheck[0] = 0;
         randomCheck[1] = 24;
         randomCheck[2] = 49;*/
@@ -82,6 +81,7 @@ class Card {
             randomCheck[i] = r;
             totalCard[i] = new Card(typeCapture(r), getNumber(r));
         }
+        int secondIndex = 0;
         for (int z = 0; z < i; ++z) {
             if (index < playerCard.length) {
                 if (z % 3 == 0 && z > 0) {
@@ -95,16 +95,7 @@ class Card {
         }
     }
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public char typeCapture(int number) {
+    private char typeCapture(int number) {
         if (number >= 0 && number <= 12)
             return type[0];
         else if (number >= 13 && number <= 25)
@@ -117,7 +108,7 @@ class Card {
             return '\0';
     }
 
-    public int getNumber(int number) {
+    private int getNumber(int number) {
         if (number <= 12)
             return numbers[number];
         else if (number < 52)
@@ -126,7 +117,7 @@ class Card {
             return 0;
     }
 
-    Card maxCard(Card card[]) {
+    private Card maxCard(Card card[]) {
         Card max = card[0];
         for (int i = 1; i < card.length; i++) {
             if (max.singleNumber < card[i].singleNumber) {
@@ -138,7 +129,7 @@ class Card {
         return max;
     }
 
-    Card maxTypeCheck(Card card1, Card card2) {
+    private Card maxTypeCheck(Card card1, Card card2) {
         int max1 = 0, max2 = 0;
         for (int i = 0; i < type.length; i++) {
             if (card1.singleCard == type[i]) max1 = i;
@@ -150,7 +141,7 @@ class Card {
             return card2;
     }
 
-    String numberToString(int data) {
+    private String numberToString(int data) {
         String string;
         if (data < 10) {
             string = " " + String.valueOf(data);
@@ -174,20 +165,20 @@ class Card {
             return null;
     }
 
-    boolean sameNumber(Card card[]) {
+    private boolean sameNumber(Card card[]) {
         return card[0].singleNumber == card[1].singleNumber && card[1].singleNumber == card[2].singleNumber;
     }
 
-    boolean sameType(Card card[]) {
+    private boolean sameType(Card card[]) {
         return card[0].singleCard == card[1].singleCard && card[1].singleCard == card[2].singleCard;
     }
 
-    boolean sequenceChecker(Card card[]) {
+    private boolean sequenceChecker(Card card[]) {
         Card[] newCards = sortNumbers(card);
         return newCards[0].singleNumber == newCards[1].singleNumber - 1 && newCards[1].singleNumber == newCards[2].singleNumber - 1;
     }
 
-    Card[] sortNumbers(Card card[]) {
+    private Card[] sortNumbers(Card card[]) {
         for (int i = 0; i < card.length; i++) {
 
             for (int j = 0; j < card.length; j++) {
@@ -201,7 +192,7 @@ class Card {
         return card;
     }
 
-    Card[] checkWin(Card card1[], Card card2[]) {
+    private Card[] checkWin(Card card1[], Card card2[]) {
         ///Same number
         if (sameNumber(card1)) {
             if (sameNumber(card2)) {
