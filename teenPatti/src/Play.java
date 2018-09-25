@@ -48,7 +48,8 @@ class Card {
             card.winner = card.checkWin(card.playerCard[y], card.winner);
             System.out.println(card.message + " ,high card of " + card.winner[0].name + " is " + maxCard(card.winner) + "\n");
         }
-        System.out.println("Final winner is " + card.winner[0].name + " ," + card.message + " ," + card.winner[0].name + "'s high card is " + card.maxCard(card.winner));
+        System.out.println("----------------------------------------------------------------");
+        System.out.println("\t\t\tFinal winner is " + card.winner[0].name + " \n" + card.message + " ," + card.winner[0].name + "'s high card is " + card.maxCard(card.winner));
     }
 
     private void display(Card[] cards, String name) {
@@ -74,9 +75,12 @@ class Card {
         randomCheck[2] = 49;*/
         for (; i < randomCheck.length; i++) {
             int r = random.nextInt(51);
-            for (int x : randomCheck) {
-                if (r == x)
+            for (int i1 = 0; i1 < randomCheck.length; i1++) {
+                int x = randomCheck[i1];
+                if (r == x) {
                     r = random.nextInt(51);
+                    i1 = 0;
+                }
             }
             randomCheck[i] = r;
             totalCard[i] = new Card(typeCapture(r), getNumber(r));
@@ -326,6 +330,6 @@ public class Play extends Card {
         Play p = new Play();
         p.gamePlay();
         long end = System.currentTimeMillis();
-        System.out.println("start :" + start + " end :" + end + " time taken : " + (end - start));
+        System.out.println("\n\nstart :" + start + " end :" + end + " time taken : " + (end - start));
     }
 }
