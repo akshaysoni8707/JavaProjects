@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class Card {
+class Card {
     final int SIZE = 3;
     String message = "";
     Card[] winner = new Card[3];
@@ -32,10 +32,9 @@ public class Card {
         this.singleNumber = numbers;
     }
 
-    public static void main(String[] args) {
+    void gamePlay() {
         Scanner scanner = new Scanner(System.in);
         int numberOfPlayers = 0;
-        long start = System.currentTimeMillis();
         System.out.println("Enter the players you want to play with?");
         numberOfPlayers = scanner.nextInt();
         Card card = new Card(numberOfPlayers);
@@ -45,14 +44,12 @@ public class Card {
             card.display(card.playerCard[y], scanner.next());
         }
         card.winner = card.playerCard[0];
-        System.out.println(card.winner[0].name);
         for (int y = 1; y < numberOfPlayers; y++) {
+            System.out.print("Between " + card.playerCard[y][0].name + " and " + card.winner[0].name + " ,");
             card.winner = card.checkWin(card.playerCard[y], card.winner);
-            System.out.println(card.maxCard(card.winner) + " " + card.message);
+            System.out.println(card.message + " ,high card of " + card.winner[0].name + " is " + maxCard(card.winner) + "\n");
         }
-        System.out.println("Final winner " + card.maxCard(card.winner) + " " + card.message);
-        long end = System.currentTimeMillis();
-        System.out.println("start :" + start + " end :" + end + " time taken : " + (end - start));
+        System.out.println("Final winner is " + card.winner[0].name + " ," + card.message + " ," + card.winner[0].name + "'s high card is " + card.maxCard(card.winner));
     }
 
     void display(Card[] cards, String name) {
@@ -329,5 +326,15 @@ public class Card {
                 " " + singleCard +
                 " " + singleNumber +
                 '}';
+    }
+}
+
+public class Play extends Card {
+    public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+        Play p = new Play();
+        p.gamePlay();
+        long end = System.currentTimeMillis();
+        System.out.println("start :" + start + " end :" + end + " time taken : " + (end - start));
     }
 }
