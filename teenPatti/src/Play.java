@@ -1,8 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-class Card {
-    private final int SIZE = 3;
+final class Card {
     private String message = "";
     private Card[] winner = new Card[3];
     private char type[] = {'\u2660', '\u2665', '\u2666', '\u2663'}, singleCard;
@@ -14,13 +13,8 @@ class Card {
     private Card totalCard[] = new Card[9];
     private Card playerCard[][];
 
-    Card() {
-        randomCheck = new int[SIZE * 2];
-        totalCard = new Card[(SIZE * 2)];
-        playerCard = new Card[SIZE - 1][SIZE];
-    }
-
     private Card(int size) {
+        int SIZE = 3;
         randomCheck = new int[SIZE * size];
         totalCard = new Card[(SIZE * size)];
         playerCard = new Card[size][SIZE];
@@ -31,22 +25,22 @@ class Card {
         this.singleNumber = numbers;
     }
 
-    void gamePlay() {
+    static void gamePlay() {
         Scanner scanner = new Scanner(System.in);
         int numberOfPlayers;
-        System.out.println("Enter the players you want to play with?");
+        System.out.println("Enter the number of players :");
         numberOfPlayers = scanner.nextInt();
         Card card = new Card(numberOfPlayers);
         card.randomCard();
         for (int y = 0; y < numberOfPlayers; y++) {
-            System.out.println(" player " + (y + 1) + " Enter your name :");
+            System.out.println("player " + (y + 1) + " Enter your name :");
             card.display(card.playerCard[y], scanner.next());
         }
         card.winner = card.playerCard[0];
         for (int y = 1; y < numberOfPlayers; y++) {
             System.out.print("Between " + card.playerCard[y][0].name + " and " + card.winner[0].name + " ,");
             card.winner = card.checkWin(card.playerCard[y], card.winner);
-            System.out.println(card.message + " ,high card of " + card.winner[0].name + " is " + maxCard(card.winner) + "\n");
+            System.out.println(card.message + " ,high card of " + card.winner[0].name + " is " + card.maxCard(card.winner) + "\n");
         }
         System.out.println("----------------------------------------------------------------");
         System.out.println("\t\t\tFinal winner is " + card.winner[0].name + " \n" + card.message + " ," + card.winner[0].name + "'s high card is " + card.maxCard(card.winner));
@@ -316,7 +310,7 @@ class Card {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "Card{" +
                 " " + singleCard +
                 " " + singleNumber +
@@ -324,11 +318,11 @@ class Card {
     }
 }
 
-public class Play extends Card {
+public class Play {
+
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        Play p = new Play();
-        p.gamePlay();
+        Card.gamePlay();
         long end = System.currentTimeMillis();
         System.out.println("\n\nstart :" + start + " end :" + end + " time taken : " + (end - start));
     }
