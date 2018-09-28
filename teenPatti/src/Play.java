@@ -21,7 +21,7 @@ final class Card {
      */
     private char type[] = {'\u2660', '\u2665', '\u2666', '\u2663'}, singleCard;
     /*
-      number[] - Holds predefined numbers , any card must be of a number from these 13.
+     *number[] - Holds predefined numbers , any card must be of a number from these 13.
      */
     /**
      * singleNumber - holds the number of particular card from predefined numbers.
@@ -48,7 +48,7 @@ final class Card {
      */
     private Card totalCard[] = new Card[9];
     /**
-     * At each index it stores a player with 3 cards on its sizeindex.
+     * At each index it stores a player with 3 cards on its sizeIndex.
      */
     private Card playerCard[][];
 
@@ -77,13 +77,32 @@ final class Card {
     static void gamePlay() {
         Scanner scanner = new Scanner(System.in);
         int numberOfPlayers;
+        String playerName;
         System.out.println("Enter the number of players :");
         numberOfPlayers = scanner.nextInt();
         Card card = new Card(numberOfPlayers);
         card.randomCard();
+        playerName = scanner.nextLine();
         for (int y = 0; y < numberOfPlayers; y++) {
-            System.out.println("player " + (y + 1) + " Enter your name :");
-            card.display(card.playerCard[y], scanner.next());
+            System.out.println(" Enter your name player " + (y + 1) + " :");
+            playerName = scanner.nextLine();
+            playerName.trim();
+            for (int a = 0; a <= y; a++) {
+                if (playerName.compareTo(card.playerCard[a][0].name) == 0) {
+                    System.out.println("\nYour name and player " + (a + 1) + "'s name are same \"" + card.playerCard[a][0].name + "\" so please again,");
+                    y--;
+                    break;
+                } else if (a == y) {
+                    if (playerName.contains(" ")) {
+                        System.out.println("\nNo spaces allowed in your Name.");
+                        y--;
+                        break;
+                    } else {
+                        card.display(card.playerCard[y], playerName);
+                        break;
+                    }
+                }
+            }
         }
         card.winner = card.playerCard[0];
         for (int y = 1; y < numberOfPlayers; y++) {
@@ -97,7 +116,7 @@ final class Card {
 
     /**
      * @param cards takes array of cards containing all cards of that player.
-     * @param name takes name of the player.
+     * @param name  takes name of the player.
      */
     private void display(Card[] cards, String name) {
         int i = 0;
@@ -198,7 +217,7 @@ final class Card {
     /**
      * @param card1 Takes card with Highest card number in cards of player, which clashes with other card of same number.
      * @param card2 Takes card with Highest card number in cards of player, which clashes with other card of same number.
-     * @return The card with higher type priorty of the given 2 cards.
+     * @return The card with higher type priority of the given 2 cards.
      */
     private Card maxTypeCheck(Card card1, Card card2) {
         int max1 = 0, max2 = 0;
@@ -415,6 +434,7 @@ final class Card {
         return "Card{" +
                 " " + singleCard +
                 " " + singleNumber +
+                " " + name +
                 '}';
     }
 }
@@ -432,5 +452,6 @@ public class Play {
         Card.gamePlay();
         long end = System.currentTimeMillis();
         System.out.println("\n\nstart :" + start + " end :" + end + " time taken : " + (end - start));
+
     }
 }
