@@ -13,20 +13,22 @@ final class Card {
      * This will store the array-object of cards of the winner player .with each card of winner player on its respective index.
      */
     private Card[] winner = new Card[3];
-    /*
-      type[] - Holds predefined 4 types , any card must be of a type from these 4.
+    /**
+     * type[] - Holds predefined 4 types , any card must be of a type from these 4.
      */
+    private char type[] = {'\u2660', '\u2665', '\u2666', '\u2663'};
     /**
      * singleCard - holds the type of particular card from predefined type.
      */
-    private char type[] = {'\u2660', '\u2665', '\u2666', '\u2663'}, singleCard;
-    /*
-     *number[] - Holds predefined numbers , any card must be of a number from these 13.
+    private char singleCard;
+    /**
+     * number[] - Holds predefined numbers , any card must be of a number from these 13.
      */
+    private int numbers[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
     /**
      * singleNumber - holds the number of particular card from predefined numbers.
      */
-    private int numbers[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14}, singleNumber;
+    private int singleNumber;
     /**
      * Holds all the randomly generated cards ,is used to check if new generated random card is not already used.
      */
@@ -51,10 +53,10 @@ final class Card {
      * At each index it stores a player with 3 cards on its sizeIndex.
      */
     private Card playerCard[][];
-/*
-  This is an overloaded constructor for card as an array object.
- */
+
     /**
+     * This is an overloaded constructor for card as an array object.
+     *
      * @param size takes number of players for whom cards are to be generated
      */
     private Card(int size) {
@@ -63,10 +65,10 @@ final class Card {
         totalCard = new Card[(SIZE * size)];
         playerCard = new Card[size][SIZE];
     }
-/*
-  This is the main card constructor that provides each and every card its own respective type and number.
- */
+
     /**
+     * This is the main card constructor that provides each and every card its own respective type and number.
+     *
      * @param type    takes type of card .
      * @param numbers takes number of a card.
      */
@@ -86,6 +88,7 @@ final class Card {
         numberOfPlayers = scanner.nextInt();
         Card card = new Card(numberOfPlayers);
         card.randomCard();
+
         scanner.nextLine();
         for (int y = 0; y < numberOfPlayers; y++) {
             System.out.println(" Enter your name player " + (y + 1) + " :");
@@ -117,10 +120,10 @@ final class Card {
         System.out.println("----------------------------------------------------------------");
         System.out.println("\t\t\tFinal winner is " + card.winner[0].name + " \n" + card.message + " ," + card.winner[0].name + "'s high card is " + card.maxCard(card.winner));
     }
-/*
-  This is the method is used to display the cards of a particular player.
- */
+
     /**
+     * This is the method is used to display the cards of a particular player.
+     *
      * @param cards takes array of cards containing all cards of that player.
      * @param name  takes name of the player.
      */
@@ -175,11 +178,10 @@ final class Card {
             }
         }
     }
-/*
-  This is the method that identifies type of every new generated random card.
- */
 
     /**
+     * This is the method that identifies type of every new generated random card.
+     *
      * @param number takes the number(form deck of 52 cards) of a card.
      * @return Its suit type for 4 predefined types.
      */
@@ -195,10 +197,10 @@ final class Card {
         else
             return '\0';
     }
-/*
-  This is the method that identifies number of every new generated random card.
- */
+
     /**
+     * This is the method that identifies number of every new generated random card.
+     *
      * @param number takes the number(form deck of 52 cards) of a card.
      * @return Its card number (from 2 to 14).
      */
@@ -210,10 +212,10 @@ final class Card {
         else
             return 0;
     }
-/*
-  This is the method is used to get the maximum/high card among the three cards of any player.
- */
+
     /**
+     * This is the method is used to get the maximum/high card among the three cards of any player.
+     *
      * @param card Takes array of cards of a given player.
      * @return Highest card of that player.
      */
@@ -228,10 +230,10 @@ final class Card {
         }
         return max;
     }
-/*
-  This is the method is used to get the maximum/high card among the 2 high cards of a player having same number,using type priority .
- */
+
     /**
+     * This is the method is used to get the maximum/high card among the 2 high cards of a player having same number,using type priority .
+     *
      * @param card1 Takes card with Highest card number in cards of player, which clashes with other card of same number.
      * @param card2 Takes card with Highest card number in cards of player, which clashes with other card of same number.
      * @return The card with higher type priority of the given 2 cards.
@@ -247,10 +249,10 @@ final class Card {
         else
             return card2;
     }
-    /*
-  This is the method is used in display method to display the suits number converting it in Ace,King,Queen,Jack or particular number(2to10).
- */
+
     /**
+     * This is the method is used in display method to display the suits number converting it in Ace,King,Queen,Jack or particular number(2to10).
+     *
      * @param data Takes the card number of a card(from 2 to14).
      * @return J for 11,Q for 12,K for 13 and A for 14.
      */
@@ -277,30 +279,30 @@ final class Card {
         } else
             return null;
     }
-/*
-  This is the method that checks if a player has all cards of same number .
- */
+
     /**
+     * This is the method that checks if a player has all cards of same number .
+     *
      * @param card Takes array of cards containing all 3 cards of a player .
      * @return If the given cards are of same number or not.
      */
     private boolean sameNumber(Card card[]) {
         return card[0].singleNumber == card[1].singleNumber && card[1].singleNumber == card[2].singleNumber;
     }
-/*
-  This is the method that checks if a player has all cards of same type .
- */
+
     /**
+     * This is the method that checks if a player has all cards of same type .
+     *
      * @param card Takes array of cards containing all 3 cards of a player .
      * @return If the given cards are of same type or not.
      */
     private boolean sameType(Card card[]) {
         return card[0].singleCard == card[1].singleCard && card[1].singleCard == card[2].singleCard;
     }
-/*
-  This is the method that checks if a player has cards with a sequence of number .
- */
+
     /**
+     * This is the method that checks if a player has cards with a sequence of number .
+     *
      * @param card Takes array of cards containing all 3 cards of a player .
      * @return If the given cards are in sequence or not.
      */
@@ -308,10 +310,10 @@ final class Card {
         Card[] newCards = sortNumbers(card);
         return newCards[0].singleNumber == newCards[1].singleNumber - 1 && newCards[1].singleNumber == newCards[2].singleNumber - 1;
     }
-/*
-  This is the method that sorts a all cards of the player in ascending order ,which are then used in checking if they are in sequence .
- */
+
     /**
+     * This is the method that sorts a all cards of the player in ascending order ,which are then used in checking if they are in sequence .
+     *
      * @param card Takes array of cards containing all 3 cards of a player .
      * @return Sorts given cards in ascending order based on their number.
      */
@@ -328,10 +330,10 @@ final class Card {
         }
         return card;
     }
-/*
-  This is the method that checks if which among the 2 players have won ,this method is used in a loop to check the winner among all players .
- */
+
     /**
+     * This is the method that checks if which among the 2 players have won ,this method is used in a loop to check the winner among all players .
+     *
      * @param card1 Takes array of cards containing all 3 cards of a player 1.
      * @param card2 Takes array of cards containing all 3 cards of a player 2.
      * @return The winner among both the players and winning reason of a player as a message.
@@ -454,10 +456,10 @@ final class Card {
             }
         }
     }
-/*
-  This is an overrided toString method used to display an object of card ,getting its singleCardType,singleCardNumber and name.
- */
+
     /**
+     * This is an overrided toString method used to display an object of card ,getting its singleCardType,singleCardNumber and name.
+     *
      * @return display of singleCard and singleNumber pf a card.
      */
     @Override
@@ -474,10 +476,9 @@ final class Card {
  * This class contains the main method to play the game.
  */
 public class Play {
-/*
-  This is the main public static method that runs the program.
- */
     /**
+     * This is the main public static method that runs the program.
+     *
      * @param args Doesn't takes any runtime argument , only calls the method gamePlay of Card class to play the game.
      */
     public static void main(String[] args) {
