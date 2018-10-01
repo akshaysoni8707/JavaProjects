@@ -4,7 +4,7 @@ import java.util.Random;
 public class SudokuGenerator {
     private char board[][] = new char[9][9];
     private int[] randomizeSudoku = new int[9];
-    private char seed[][] = new char[][]{{'1', '2', '3', '4', '5', '6', '7', '8', '9'},
+    private char transposedSeed[][] = new char[][]{{'1', '2', '3', '4', '5', '6', '7', '8', '9'},
             {'4', '5', '6', '7', '8', '9', '1', '2', '3'},
             {'7', '8', '9', '1', '2', '3', '4', '5', '6'},
             {'2', '3', '1', '5', '6', '4', '8', '9', '7'},
@@ -12,14 +12,38 @@ public class SudokuGenerator {
             {'8', '9', '7', '2', '3', '1', '5', '6', '4'},
             {'3', '1', '2', '6', '4', '5', '9', '7', '8'},
             {'6', '4', '5', '9', '7', '8', '3', '1', '2'},
-            {'9', '7', '8', '3', '1', '2', '6', '4', '5'},
-    };
+            {'9', '7', '8', '3', '1', '2', '6', '4', '5'},};
+    private char seed[][] = new char[9][9];
     private Random random = new Random();
 
     public static void main(String[] args) {
         SudokuGenerator s = new SudokuGenerator();
-        s.shuffle();
-        s.display();
+        int n = 10, i = 1;
+        long start = System.currentTimeMillis();
+        while (i <= n) {
+            System.out.println("------Number of Board : " + (i) + "  ----------\n");
+            s.transpose();
+            s.shuffle();
+            s.display();
+            s.seedChanger();
+            i++;
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(" Time consumed : " + (end - start) + " mil sec");
+    }
+
+    private void transpose() {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                seed[j][i] = transposedSeed[i][j];
+            }
+        }
+    }
+
+    private void seedChanger() {
+        for (int i = 0; i < 9; i++) {
+            System.arraycopy(board[i], 0, transposedSeed[i], 0, board.length);
+        }
     }
 
     private void randomSudokuGenerator() {
@@ -77,8 +101,6 @@ public class SudokuGenerator {
     }
 
     private void display() {
-
-
         int i, j;
         for (i = 0; i <= 8; ++i) {
             if (i == 0) {
