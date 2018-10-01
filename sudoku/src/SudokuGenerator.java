@@ -1,6 +1,9 @@
+import java.util.Arrays;
+import java.util.Random;
+
 public class SudokuGenerator {
     private char board[][] = new char[9][9];
-    //   private int[] randomizeSudoku = new int[9];
+    private int[] randomizeSudoku = new int[9];
     private char seed[][] = new char[][]{{'1', '2', '3', '4', '5', '6', '7', '8', '9'},
             {'4', '5', '6', '7', '8', '9', '1', '2', '3'},
             {'7', '8', '9', '1', '2', '3', '4', '5', '6'},
@@ -11,6 +14,7 @@ public class SudokuGenerator {
             {'6', '4', '5', '9', '7', '8', '3', '1', '2'},
             {'9', '7', '8', '3', '1', '2', '6', '4', '5'},
     };
+    private Random random = new Random();
 
     public static void main(String[] args) {
         SudokuGenerator s = new SudokuGenerator();
@@ -18,24 +22,51 @@ public class SudokuGenerator {
         s.display();
     }
 
+    private void randomSudokuGenerator() {
+        for (int i = 0; i < randomizeSudoku.length; i++) {
+            randomizeSudoku[i] = 9;
+        }
+        int i = 0;
+        for (; i < randomizeSudoku.length; ++i) {
+            int r = random.nextInt(2);
+            for (int i1 = 0; i1 < i; ++i1) {
+                int x = randomizeSudoku[i1];
+                if (x == r) {
+                    if (i < 3) {
+                        r = random.nextInt(3);
+                    } else if (i < 6) {
+                        r = random.nextInt(3) + 3;
+                    } else if (i < 9) {
+                        r = random.nextInt(3) + 6;
+                    }
+                    i1 = -1;
+                }
+            }
+            randomizeSudoku[i] = r;
+        }
+    }
+
     private void shuffle() {
+        randomSudokuGenerator();
+        System.out.println(Arrays.toString(randomizeSudoku));
         for (int x = 0; x < 9; x++) {
-            board[0][x] = seed[1][x];
-            board[1][x] = seed[0][x];
-            board[2][x] = seed[2][x];
-            board[3][x] = seed[3][x];
-            board[4][x] = seed[5][x];
-            board[5][x] = seed[4][x];
-            board[6][x] = seed[8][x];
-            board[7][x] = seed[6][x];
-            board[8][x] = seed[7][x];
+            board[0][x] = seed[randomizeSudoku[0]][x];
+            board[1][x] = seed[randomizeSudoku[1]][x];
+            board[2][x] = seed[randomizeSudoku[2]][x];
+            board[3][x] = seed[randomizeSudoku[3]][x];
+            board[4][x] = seed[randomizeSudoku[4]][x];
+            board[5][x] = seed[randomizeSudoku[5]][x];
+            board[6][x] = seed[randomizeSudoku[6]][x];
+            board[7][x] = seed[randomizeSudoku[7]][x];
+            board[8][x] = seed[randomizeSudoku[8]][x];
         }
         for (int x = 0; x < 9; x++) {
-            swapping(board, x, 1, 0);
-            swapping(board, x, 2, 0);
-            swapping(board, x, 5, 4);
-            swapping(board, x, 5, 3);
-            swapping(board, x, 8, 6);
+
+            if (randomizeSudoku[0] == 0) swapping(board, x, 1, 0);
+            if (randomizeSudoku[0] == 1) swapping(board, x, 2, 0);
+            if (randomizeSudoku[0] == 0) swapping(board, x, 5, 4);
+            if (randomizeSudoku[0] == 1) swapping(board, x, 5, 3);
+            if (randomizeSudoku[0] == 2) swapping(board, x, 8, 6);
         }
     }
 
@@ -46,6 +77,8 @@ public class SudokuGenerator {
     }
 
     private void display() {
+
+
         int i, j;
         for (i = 0; i <= 8; ++i) {
             if (i == 0) {
