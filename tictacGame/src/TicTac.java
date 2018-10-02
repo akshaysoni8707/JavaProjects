@@ -1,15 +1,34 @@
 import java.util.Random;
 
 public class TicTac {
+    static {
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t  ________________________    _______________________");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t |___  ___|___  ___|  ____|  |___  ___|   _   |  ____|");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t    |  |     |  |  |  |   ____  |  |  |  |_|  |  |");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t    |  |     |  |  |  |  |____| |  |  |   _   |  |");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t    |  |   __|  |__|  |___      |  |  |  | |  |  |___");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t    |__|  |________|______|     |__|  |__| |__|______|");
+        System.out.println("\n\n");
+    }
+
     private char board[] = new char[9];
     private char turn = 'O';
     private Random random = new Random();
+    private int winX = 0;
+    private int winO = 0;
 
     public static void main(String[] args) {
         TicTac t = new TicTac();
-        t.initializeBoard();
-        System.out.println(t.turn);
-        t.play();
+        int numberOfGames = 200;
+        long start, end;
+        start = System.currentTimeMillis();
+        do {
+            t.play();
+            numberOfGames--;
+            System.out.println("\t\t\t\t\t\t\t\t\t\t\t----------------------------------------------------------------");
+        } while (numberOfGames > 0);
+        end = System.currentTimeMillis();
+        System.out.println("\n\t\t\t\t\t\t\t\t\t\t\tTime taken by the program to execute is : " + (end - start));
     }
 
     private void initializeBoard() {
@@ -46,7 +65,6 @@ public class TicTac {
             int r = random.nextInt(9);
             if (r == 1 || r == 3 || r == 5 || r == 7 || r != 4) {
                 r = random.nextInt(9);
-                //     System.out.println(r);
             }
             if (board[r] == ' ') {
                 board[r] = turn;
@@ -83,6 +101,7 @@ public class TicTac {
     }
 
     private void play() {
+        initializeBoard();
         do {
             if (win()) {
                 switchPlayer();
@@ -92,14 +111,25 @@ public class TicTac {
                 attack();
                 switchPlayer();
             }
-            display();
-            System.out.println("\n");
+            //    display();
+            //   System.out.println("\n");
         } while (!filled() && !checkWin());
         if (checkWin()) {
             switchPlayer();
-            System.out.println("  CPU vs CPU : CPU playing with ' " + turn + " ' has won");
+            if (turn == 'O') {
+                winO++;
+            } else {
+                winX++;
+            }
+            System.out.println();
+            display();
+            System.out.println("\n");
+            System.out.println("\t\t\t\t\t\t\t\t\t\t\t  CPU vs CPU : CPU playing with ' " + turn + " ' has won");
         } else {
-            System.out.println("  CPU vs CPU : game is draw... ");
+            System.out.println();
+            display();
+            System.out.println("\n");
+            System.out.println("\t\t\t\t\t\t\t\t\t\t\t  CPU vs CPU : game is draw... ");
         }
     }
 
@@ -109,10 +139,10 @@ public class TicTac {
 
     private void display() {
 
-        System.out.println("     " + board[0] + " | " + board[1] + " | " + board[2]);
-        System.out.println("    ---|---|---");
-        System.out.println("     " + board[3] + " | " + board[4] + " | " + board[5]);
-        System.out.println("    ---|---|---");
-        System.out.println("     " + board[6] + " | " + board[7] + " | " + board[8]);
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t " + board[0] + " | " + board[1] + " | " + board[2] + "            CPU 1 'O' | CPU 2 'X'");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t---|---|---            ---------|---------");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t " + board[3] + " | " + board[4] + " | " + board[5] + "                      |");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t---|---|---" + "\t   \t\t\t\t" + winO + "\t|\t" + winX);
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t " + board[6] + " | " + board[7] + " | " + board[8] + "                      |");
     }
 }
