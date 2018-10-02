@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="IndianPoker">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../IndianPoker/out/artifacts/IndianPoker_jar/IndianPoker.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
