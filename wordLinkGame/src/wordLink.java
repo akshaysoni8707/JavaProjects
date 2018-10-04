@@ -4,12 +4,11 @@ public class wordLink {
     private String[] library;
     private String[] questions = new String[5];
     private char[] lettersChose;
-    private int counter = 0;
+    private int counter;
 
     public static void main(String[] args) {
-        wordLink w = new wordLink();
-        w.setQuestions();
-        w.display();
+        // wordLink w = new wordLink();
+        new wordLink().display();
     }
 
     private void createLibrary() {
@@ -17,7 +16,7 @@ public class wordLink {
     }
 
     private void chooseLetter() {
-        lettersChose = new char[]{'a', 'b', 't', 'o'};
+        lettersChose = new char[]{'a', 'b', 't', 'o', 't', 'h'};
     }
 
     private void setQuestions() {
@@ -52,10 +51,11 @@ public class wordLink {
     }
 
     private void display() {
+        setQuestions();
         System.out.println("\t\t\t\t\t\t\t\t\t" + Arrays.toString(lettersChose));
         for (int i1 = 0; i1 < counter; i1++) {
             System.out.print("\t\t\t\t\t\t\t\t\t\t" + questions[i1] + "  ");
-            for (char x : questions[i1].toCharArray()) {
+            for (char ignored : questions[i1].toCharArray()) {
                 System.out.print("_ ");
             }
             System.out.println();
