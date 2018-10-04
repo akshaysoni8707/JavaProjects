@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/sudoku/sudoku.iml" filepath="$PROJECT_DIR$/sudoku/sudoku.iml" />
       <module fileurl="file://$PROJECT_DIR$/teenPatti/teenPatti.iml" filepath="$PROJECT_DIR$/teenPatti/teenPatti.iml" />
       <module fileurl="file://$PROJECT_DIR$/tictacGame/tictacGame.iml" filepath="$PROJECT_DIR$/tictacGame/tictacGame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wordLinkGame/wordLinkGame.iml" filepath="$PROJECT_DIR$/wordLinkGame/wordLinkGame.iml" />
     </modules>
   </component>
 </project>
