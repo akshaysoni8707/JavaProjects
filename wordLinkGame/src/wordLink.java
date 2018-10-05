@@ -8,7 +8,10 @@ public class wordLink {
 
     public static void main(String[] args) {
         // wordLink w = new wordLink();
+        long start = System.currentTimeMillis();
         new wordLink().display();
+        long end = System.currentTimeMillis();
+        System.out.println("Time take for program to run :" + (end - start));
     }
 
     private void createLibrary() {
@@ -52,10 +55,8 @@ public class wordLink {
     private void add(String str) {
         if (questions.length >= 2) {
             this.questions = Arrays.copyOf(questions, questions.length + 1);
-            questions[counter++] = str;
-        } else {
-            questions[counter++] = str;
         }
+        questions[counter++] = str;
     }
 
     private void display() {
