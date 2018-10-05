@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class wordLink {
     private String[] library;
-    private String[] questions = new String[5];
+    private String[] questions = new String[2];
     private char[] lettersChose;
     private int counter;
 
@@ -16,7 +16,7 @@ public class wordLink {
     }
 
     private void chooseLetter() {
-        lettersChose = new char[]{'a', 'b', 't', 'o', 't', 'h'};
+        lettersChose = new char[]{'a', 'b', 't', 's', 'o', 't', 'h', 'i'};
     }
 
     private void setQuestions() {
@@ -30,7 +30,7 @@ public class wordLink {
 
             for (char aLettersChose : lettersChose) {
                 if (tempString.contains(Character.toString(aLettersChose))) {
-                    //        System.out.println(tempString + " " + aLettersChose);
+                    //  System.out.println(tempString + " " + aLettersChose);
                     tempString = tempString.replaceFirst(String.valueOf(aLettersChose), " ");
                 }
             }
@@ -40,14 +40,22 @@ public class wordLink {
                 if (charArray[i1] != ' ') {
                     break;
                 } else if (i1 == charArray.length - 1) {
-                    questions[counter] = library[i];
-                    counter++;
+                    add(library[i]);
                     break;
                 }
             }
             i++;
             //  System.out.println(counter);
         } while (i < library.length);
+    }
+
+    private void add(String str) {
+        if (questions.length >= 2) {
+            this.questions = Arrays.copyOf(questions, questions.length + 1);
+            questions[counter++] = str;
+        } else {
+            questions[counter++] = str;
+        }
     }
 
     private void display() {
