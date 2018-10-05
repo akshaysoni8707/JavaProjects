@@ -16,10 +16,8 @@ public class DynamicArray {
     private void add(String str) {
         if (question.length >= 2) {
             this.question = Arrays.copyOf(question, question.length + 1);
-            question[counter++] = str;
-        } else {
-            question[counter++] = str;
         }
+        question[counter++] = str;
     }
 
     private void display() {
