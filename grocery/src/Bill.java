@@ -45,10 +45,12 @@ class Bill extends inventory {
     }
 
     private void billGenerator() {
+        long start = System.currentTimeMillis();
         inventory myInventory = new inventory();
         int total = 0;
         myInventory.addItems(1, "orange", 4, 24);
         myInventory.addItems(2, "apple", 2, 25);
+        myInventory.addItems(5, "apple", 2, 25);
         myInventory.addItems(3, "mango", 9, 26);
         myInventory.addItems(4, "grapes", 5, 27);
         System.out.println(myInventory.toString());
@@ -57,8 +59,16 @@ class Bill extends inventory {
         addBill(2, 2, myInventory.counter, myInventory);
         addBill(4, 3, myInventory.counter, myInventory);
         System.out.println(billDisplay(total));
+        System.out.println("\n Inventory after bill generated....\n");
+        System.out.println(myInventory.toString());
+        myInventory.updateItems(2, 5);
+        myInventory.updateItems("ORange", 3);
+        myInventory.updateItems(4, 0, 34);
+        myInventory.updateItems("mAngo", 1, 60);
         System.out.println("\nLets check if inventory is updated...\n");
         System.out.println(myInventory.toString());
+        long end = System.currentTimeMillis();
+        System.out.println(" time taken for program to run :" + (end - start));
     }
 
     private String billDisplay(int total) {
@@ -100,10 +110,76 @@ class inventory {
     }
 
     void addItems(int product_id, String product_name, int product_quantity, int product_price) {
-        if (counter >= 2) {
-            this.inventoryItem = Arrays.copyOf(inventoryItem, counter + 1);
+        int i;
+        for (i = 0; i < counter; i++) {
+            if (inventoryItem[i].product_id == product_id) {
+                System.err.println("This id :" + product_id + " already exist");
+                break;
+            } else if (inventoryItem[i].product_name.equalsIgnoreCase(product_name)) {
+                System.err.println("This name :" + product_name + " already exist");
+                break;
+            }
         }
-        inventoryItem[counter++] = new inventory(product_id, product_name, product_quantity, product_price);
+        if (i == counter) {
+            if (counter >= 2) {
+                this.inventoryItem = Arrays.copyOf(inventoryItem, counter + 1);
+            }
+            inventoryItem[counter++] = new inventory(product_id, product_name, product_quantity, product_price);
+        }
+    }
+
+    void updateItems(int id, int quantity) {
+        int i;
+        for (i = 0; i < counter; i++) {
+            if (inventoryItem[i].product_id == id) {
+                inventoryItem[i].product_quantity += quantity;
+                break;
+            }
+        }
+        if (i == counter) {
+            System.err.println("There is no item with id : " + id);
+        }
+    }
+
+    void updateItems(String name, int quantity) {
+        int i;
+        for (i = 0; i < counter; i++) {
+            if (inventoryItem[i].product_name.equalsIgnoreCase(name)) {
+                inventoryItem[i].product_quantity += quantity;
+                break;
+            }
+        }
+        if (i == counter) {
+            System.err.println("There is no item with id : " + name);
+        }
+    }
+
+    void updateItems(int id, int quantity, int price) {
+        int i;
+        for (i = 0; i < counter; i++) {
+            if (inventoryItem[i].product_id == id) {
+                inventoryItem[i].product_quantity += quantity;
+                inventoryItem[i].product_price = price;
+                break;
+            }
+        }
+        if (i == counter) {
+            System.err.println("There is no item with id : " + id);
+        }
+    }
+
+    void updateItems(String name, int quantity, int price) {
+        int i;
+        for (i = 0; i < counter; i++) {
+            if (inventoryItem[i].product_name.equalsIgnoreCase(name)) {
+                inventoryItem[i].product_quantity += quantity;
+                inventoryItem[i].product_price = price;
+                break;
+            }
+        }
+        if (i == counter) {
+            System.err.println("There is no item with id : " + name);
+        }
     }
 
     @Override
