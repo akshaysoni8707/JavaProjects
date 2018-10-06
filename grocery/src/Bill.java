@@ -45,7 +45,7 @@ class Bill extends inventory {
     }
 
     private void billGenerator() {
-        long start = System.currentTimeMillis();
+        long start1 = System.currentTimeMillis();
         inventory myInventory = new inventory();
         int total = 0;
         myInventory.addItems(1, "orange", 4, 24);
@@ -53,20 +53,32 @@ class Bill extends inventory {
         myInventory.addItems(5, "apple", 2, 25);
         myInventory.addItems(3, "mango", 9, 26);
         myInventory.addItems(4, "grapes", 5, 27);
-        System.out.println(myInventory.toString());
+        for (int i = 5; i < 10000; i++) {
+            myInventory.addItems(i, "mango" + i, 9, 26);
+        }
+        //    System.out.println(myInventory.toString());
         addBill(1, 3, myInventory.counter, myInventory);
         addBill(2, 2, myInventory.counter, myInventory);
         addBill(2, 2, myInventory.counter, myInventory);
         addBill(4, 3, myInventory.counter, myInventory);
-        System.out.println(billDisplay(total));
+
+        //    System.out.println(billDisplay(total));
         System.out.println("\n Inventory after bill generated....\n");
-        System.out.println(myInventory.toString());
+        //   System.out.println(myInventory.toString());
         myInventory.updateItems(2, 5);
         myInventory.updateItems("ORange", 3);
         myInventory.updateItems(4, 0, 34);
         myInventory.updateItems("mAngo", 1, 60);
         System.out.println("\nLets check if inventory is updated...\n");
-        System.out.println(myInventory.toString());
+        //   System.out.println(myInventory.toString());
+        long end1 = System.currentTimeMillis();
+        System.out.println(" time taken for program to run :" + (end1 - start1));
+        long start = System.currentTimeMillis();
+        System.out.println("\n Searching Grapes");
+        myInventory.searchItems("mango9905");
+
+        myInventory.searchItems(9980);
+
         long end = System.currentTimeMillis();
         System.out.println(" time taken for program to run :" + (end - start));
     }
@@ -90,6 +102,7 @@ class Bill extends inventory {
         return message;
     }
 }
+
 
 class inventory {
     inventory[] inventoryItem = new inventory[2];
@@ -150,7 +163,7 @@ class inventory {
             }
         }
         if (i == counter) {
-            System.err.println("There is no item with id : " + name);
+            System.err.println("There is no item with name : " + name);
         }
     }
 
@@ -168,6 +181,7 @@ class inventory {
         }
     }
 
+
     void updateItems(String name, int quantity, int price) {
         int i;
         for (i = 0; i < counter; i++) {
@@ -178,9 +192,70 @@ class inventory {
             }
         }
         if (i == counter) {
-            System.err.println("There is no item with id : " + name);
+            System.err.println("There is no item with name : " + name);
         }
     }
+
+    void searchItems(String name) {
+        int i;
+        for (i = 0; i < counter; i++) {
+            if (inventoryItem[i].product_name.equalsIgnoreCase(name)) {
+                System.out.println(inventoryItem[i].product_id + "  " + inventoryItem[i].product_name + "  " + inventoryItem[i].product_quantity + "  " + inventoryItem[i].product_price);
+                break;
+            }
+        }
+        if (i == counter) {
+            System.err.println("There is no item with name : " + name);
+        }
+    }
+
+    void searchItems(int id) {
+        int i;
+        for (i = 0; i < counter; i++) {
+            if (inventoryItem[i].product_id == id) {
+                System.out.println(inventoryItem[i].product_id + "  " + inventoryItem[i].product_name + "  " + inventoryItem[i].product_quantity + "  " + inventoryItem[i].product_price);
+                break;
+            }
+        }
+        if (i == counter) {
+            System.err.println("There is no item with id : " + id);
+        }
+//        int local=find(id);
+        //       System.out.println(inventoryItem[local].product_id+"  "+inventoryItem[local].product_name+"  "+inventoryItem[local].product_quantity+"  "+inventoryItem[local].product_price);
+    }
+
+    int find(int data) {
+        int lo = 0;
+        int hi = inventoryItem.length - 1;
+        int mid = -1;
+        int comparisons = 1;
+        int index = -1;
+
+        while (lo <= hi) {
+            System.out.println("\nComparison :" + comparisons);
+            comparisons++;
+
+            // probe the mid point
+            mid = ( int ) (lo + ((( double ) (hi - lo) / (inventoryItem[hi].product_id - inventoryItem[lo].product_id)) * (data - inventoryItem[lo].product_id)));
+            // data found
+            if (inventoryItem[mid].product_id == data) {
+                index = mid;
+                break;
+            } else {
+                if (inventoryItem[mid].product_id < data) {
+                    // if data is larger, data is in upper half
+                    lo = mid + 1;
+                } else {
+                    // if data is smaller, data is in lower half
+                    hi = mid - 1;
+                }
+            }
+        }
+
+        System.out.println("\nTotal comparisons made:  " + --comparisons);
+        return index;
+    }
+
 
     @Override
     public String toString() {
