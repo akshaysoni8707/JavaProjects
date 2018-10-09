@@ -56,28 +56,38 @@ class Bill extends inventory {
         for (int i = 5; i < 10000; i++) {
             myInventory.addItems(i, "mango" + i, 9, 26);
         }
-        //    System.out.println(myInventory.toString());
+        System.out.println(myInventory.toString());
         addBill(1, 3, myInventory.counter, myInventory);
         addBill(2, 2, myInventory.counter, myInventory);
         addBill(2, 2, myInventory.counter, myInventory);
         addBill(4, 3, myInventory.counter, myInventory);
 
-        //    System.out.println(billDisplay(total));
+        System.out.println(billDisplay(total));
+
         System.out.println("\n Inventory after bill generated....\n");
-        //   System.out.println(myInventory.toString());
+        System.out.println(myInventory.toString());
+
         myInventory.updateItems(2, 5);
+        myInventory.updateItems(9997, 9);
         myInventory.updateItems("ORange", 3);
-        myInventory.updateItems(4, 0, 34);
+        myInventory.updateItems("MANGO9999", 500000000);
+        myInventory.updateItems(9980, 0, 34);
+        myInventory.updateItems(9905, 1, 57);
         myInventory.updateItems("mAngo", 1, 60);
+        myInventory.updateItems("mAngo9998", 5, 57);
+
         System.out.println("\nLets check if inventory is updated...\n");
-        //   System.out.println(myInventory.toString());
+        System.out.println(myInventory.toString());
+
         long end1 = System.currentTimeMillis();
         System.out.println(" time taken for program to run :" + (end1 - start1));
         long start = System.currentTimeMillis();
-        System.out.println("\n Searching Grapes");
-        myInventory.searchItems("mango9905");
 
+        System.out.println("\n Searching items.");
+        myInventory.searchItems("mango9905");
+        myInventory.searchItems("mango9998");
         myInventory.searchItems(9980);
+        myInventory.searchItems(9999);
 
         long end = System.currentTimeMillis();
         System.out.println(" time taken for program to run :" + (end - start));
@@ -181,7 +191,6 @@ class inventory {
         }
     }
 
-
     void updateItems(String name, int quantity, int price) {
         int i;
         for (i = 0; i < counter; i++) {
@@ -224,7 +233,7 @@ class inventory {
         //       System.out.println(inventoryItem[local].product_id+"  "+inventoryItem[local].product_name+"  "+inventoryItem[local].product_quantity+"  "+inventoryItem[local].product_price);
     }
 
-    int find(int data) {
+    /*int find(int data) {
         int lo = 0;
         int hi = inventoryItem.length - 1;
         int mid = -1;
@@ -251,10 +260,9 @@ class inventory {
                 }
             }
         }
-
         System.out.println("\nTotal comparisons made:  " + --comparisons);
         return index;
-    }
+    }*/
 
 
     @Override
