@@ -5,7 +5,7 @@ class Bill extends inventory {
     private int productId;
     private String productName;
     private int productQuantity;
-    private int productPrice;
+    private float productPrice;
 
     private int counter1;
 
@@ -70,7 +70,7 @@ class Bill extends inventory {
         myInventory.updateItems(2, 5);
         myInventory.updateItems(9997, 9);
         myInventory.updateItems("ORange", 3);
-        myInventory.updateItems("MANGO9999", 500000000);
+        myInventory.updateItems("MANGO9999", 5146);
         myInventory.updateItems(9980, 0, 34);
         myInventory.updateItems(9905, 1, 57);
         myInventory.updateItems("mAngo", 1, 60);
@@ -93,7 +93,7 @@ class Bill extends inventory {
         System.out.println(" time taken for program to run :" + (end - start));
     }
 
-    private String billDisplay(int total) {
+    private String billDisplay(float total) {
         System.out.println("--------------------------- B I L L ---------------------------");
         System.out.println("Product_id    Product_name    Product_quantity    Product_price\n" +
                 "---------------------------------------------------------------");
@@ -101,8 +101,8 @@ class Bill extends inventory {
         for (int i = 0; i < counter1; i++) {
             message = message.concat("    " + bill_item[i].productId +
                     "           " + bill_item[i].productName + '\'' +
-                    "          \t  " + bill_item[i].productQuantity +
-                    "           \t " + bill_item[i].productPrice +
+                    "          \t" + bill_item[i].productQuantity +
+                    "           \t" + bill_item[i].productPrice +
                     "\n");
             total = total + bill_item[i].productPrice;
         }
@@ -113,13 +113,12 @@ class Bill extends inventory {
     }
 }
 
-
 class inventory {
     inventory[] inventoryItem = new inventory[2];
     int product_id;
     String product_name;
     int product_quantity;
-    int product_price;
+    float product_price;
     int counter;
 
     private inventory(int product_id, String product_name, int product_quantity, int product_price) {
@@ -229,41 +228,7 @@ class inventory {
         if (i == counter) {
             System.err.println("There is no item with id : " + id);
         }
-//        int local=find(id);
-        //       System.out.println(inventoryItem[local].product_id+"  "+inventoryItem[local].product_name+"  "+inventoryItem[local].product_quantity+"  "+inventoryItem[local].product_price);
     }
-
-    /*int find(int data) {
-        int lo = 0;
-        int hi = inventoryItem.length - 1;
-        int mid = -1;
-        int comparisons = 1;
-        int index = -1;
-
-        while (lo <= hi) {
-            System.out.println("\nComparison :" + comparisons);
-            comparisons++;
-
-            // probe the mid point
-            mid = ( int ) (lo + ((( double ) (hi - lo) / (inventoryItem[hi].product_id - inventoryItem[lo].product_id)) * (data - inventoryItem[lo].product_id)));
-            // data found
-            if (inventoryItem[mid].product_id == data) {
-                index = mid;
-                break;
-            } else {
-                if (inventoryItem[mid].product_id < data) {
-                    // if data is larger, data is in upper half
-                    lo = mid + 1;
-                } else {
-                    // if data is smaller, data is in lower half
-                    hi = mid - 1;
-                }
-            }
-        }
-        System.out.println("\nTotal comparisons made:  " + --comparisons);
-        return index;
-    }*/
-
 
     @Override
     public String toString() {
@@ -274,8 +239,8 @@ class inventory {
         for (int i = 0; i < counter; i++) {
             message = message.concat("    " + inventoryItem[i].product_id +
                     "           " + inventoryItem[i].product_name + '\'' +
-                    "          \t  " + inventoryItem[i].product_quantity +
-                    "           \t " + inventoryItem[i].product_price +
+                    "          \t" + inventoryItem[i].product_quantity +
+                    "           \t" + inventoryItem[i].product_price +
                     "\n");
         }
         message = message.concat("---------------------------------------------------------------\n");
