@@ -5,7 +5,7 @@ class Bill extends inventory {
     private int productId;
     private String productName;
     private int productQuantity;
-    private float productPrice;
+    private double productPrice;
 
     private int counter1;
 
@@ -24,11 +24,11 @@ class Bill extends inventory {
         a.billGenerator();
     }
 
-    private void addBill(int giveId, int quantity, int counter, inventory ob) {
+    private void addBill(int giveId, int quantity, inventory ob) {
         if (counter1 >= 2) {
             this.bill_item = Arrays.copyOf(bill_item, counter1 + 1);
         }
-        for (int i = 0; i < counter; i++) {
+        for (int i = 0; i < ob.counter; i++) {
             if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity >= 0) {
                 bill_item[counter1++] = new Bill(ob.inventoryItem[i], quantity);
                 ob.inventoryItem[i].product_quantity -= quantity;
@@ -37,7 +37,7 @@ class Bill extends inventory {
             } else if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity <= 0) {
                 System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
                 break;
-            } else if (i == counter) {
+            } else if (i == ob.counter) {
                 System.out.println(" Wrong Id of Product");
                 break;
             }
@@ -47,25 +47,25 @@ class Bill extends inventory {
     private void billGenerator() {
         long start1 = System.currentTimeMillis();
         inventory myInventory = new inventory();
-        int total = 0;
+        float total = 0;
         myInventory.addItems(1, "orange", 4, 24);
-        myInventory.addItems(2, "apple", 2, 25);
+        myInventory.addItems(2, "apple", 3, 25.5);
         myInventory.addItems(5, "apple", 2, 25);
         myInventory.addItems(3, "mango", 9, 26);
         myInventory.addItems(4, "grapes", 5, 27);
         for (int i = 5; i < 10000; i++) {
             myInventory.addItems(i, "mango" + i, 9, 26);
         }
-        System.out.println(myInventory.toString());
-        addBill(1, 3, myInventory.counter, myInventory);
-        addBill(2, 2, myInventory.counter, myInventory);
-        addBill(2, 2, myInventory.counter, myInventory);
-        addBill(4, 3, myInventory.counter, myInventory);
+        //  System.out.println(myInventory.toString());
+        addBill(1, 3, myInventory);
+        addBill(2, 3, myInventory);
+        addBill(2, 2, myInventory);
+        addBill(4, 3, myInventory);
 
         System.out.println(billDisplay(total));
 
         System.out.println("\n Inventory after bill generated....\n");
-        System.out.println(myInventory.toString());
+        // System.out.println(myInventory.toString());
 
         myInventory.updateItems(2, 5);
         myInventory.updateItems(9997, 9);
@@ -77,7 +77,7 @@ class Bill extends inventory {
         myInventory.updateItems("mAngo9998", 5, 57);
 
         System.out.println("\nLets check if inventory is updated...\n");
-        System.out.println(myInventory.toString());
+        //   System.out.println(myInventory.toString());
 
         long end1 = System.currentTimeMillis();
         System.out.println(" time taken for program to run :" + (end1 - start1));
@@ -93,7 +93,7 @@ class Bill extends inventory {
         System.out.println(" time taken for program to run :" + (end - start));
     }
 
-    private String billDisplay(float total) {
+    private String billDisplay(double total) {
         System.out.println("--------------------------- B I L L ---------------------------");
         System.out.println("Product_id    Product_name    Product_quantity    Product_price\n" +
                 "---------------------------------------------------------------");
@@ -118,10 +118,10 @@ class inventory {
     int product_id;
     String product_name;
     int product_quantity;
-    float product_price;
+    double product_price;
     int counter;
 
-    private inventory(int product_id, String product_name, int product_quantity, int product_price) {
+    private inventory(int product_id, String product_name, int product_quantity, double product_price) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.product_quantity = product_quantity;
@@ -131,7 +131,7 @@ class inventory {
     inventory() {
     }
 
-    void addItems(int product_id, String product_name, int product_quantity, int product_price) {
+    void addItems(int product_id, String product_name, int product_quantity, double product_price) {
         int i;
         for (i = 0; i < counter; i++) {
             if (inventoryItem[i].product_id == product_id) {
@@ -176,7 +176,7 @@ class inventory {
         }
     }
 
-    void updateItems(int id, int quantity, int price) {
+    void updateItems(int id, int quantity, double price) {
         int i;
         for (i = 0; i < counter; i++) {
             if (inventoryItem[i].product_id == id) {
@@ -190,7 +190,7 @@ class inventory {
         }
     }
 
-    void updateItems(String name, int quantity, int price) {
+    void updateItems(String name, int quantity, double price) {
         int i;
         for (i = 0; i < counter; i++) {
             if (inventoryItem[i].product_name.equalsIgnoreCase(name)) {
