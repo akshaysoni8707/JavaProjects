@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public class wordLink {
     private String[] library;
@@ -7,7 +8,6 @@ public class wordLink {
     private int counter;
 
     public static void main(String[] args) {
-        // wordLink w = new wordLink();
         long start = System.currentTimeMillis();
         new wordLink().display();
         long end = System.currentTimeMillis();
@@ -15,11 +15,11 @@ public class wordLink {
     }
 
     private void createLibrary() {
-        library = new String[]{"hello", "this", "is", "his", "iiht", "bat", "that", "bot", "boat"};
+        library = new String[]{"hello", "this", "is", "his", "iiht", "bat", "that", "bot", "boat", "at", "hat", "sat"};
     }
 
     private void chooseLetter() {
-        lettersChose = new char[]{'a', 'b', 't', 's', 'o', 't', 'h', 'i'};
+        lettersChose = new char[]{'a', 'b', 't', 's', 't', 'h', 'i'};
     }
 
     private void setQuestions() {
@@ -29,31 +29,20 @@ public class wordLink {
         do {
             String tempString;
             tempString = library[i];
-            // StringBuilder temp=new StringBuilder();
 
             for (char aLettersChose : lettersChose) {
                 if (tempString.contains(Character.toString(aLettersChose))) {
-                    //  System.out.println(tempString + " " + aLettersChose);
                     tempString = tempString.replaceFirst(String.valueOf(aLettersChose), " ");
                 }
             }
-            // System.out.println(tempString);
-            char[] charArray = tempString.toCharArray();
-            for (int i1 = 0; i1 < charArray.length; i1++) {
-                if (charArray[i1] != ' ') {
-                    break;
-                } else if (i1 == charArray.length - 1) {
-                    add(library[i]);
-                    break;
-                }
-            }
+            if (Pattern.matches("^[\\s]+$", tempString)) add(library[i]);
             i++;
-            //  System.out.println(counter);
         } while (i < library.length);
     }
 
     private void add(String str) {
         if (questions.length >= 2) {
+
             this.questions = Arrays.copyOf(questions, questions.length + 1);
         }
         questions[counter++] = str;
@@ -63,7 +52,8 @@ public class wordLink {
         setQuestions();
         System.out.println("\t\t\t\t\t\t\t\t\t" + Arrays.toString(lettersChose));
         for (int i1 = 0; i1 < counter; i1++) {
-            System.out.print("\t\t\t\t\t\t\t\t\t\t" + questions[i1] + "  ");
+            System.out.print("\t\t\t\t\t\t\t\t\t \t" + questions[i1] + " ");
+            System.out.print(" \t");
             for (char ignored : questions[i1].toCharArray()) {
                 System.out.print("_ ");
             }
