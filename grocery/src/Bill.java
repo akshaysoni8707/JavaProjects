@@ -34,7 +34,7 @@ class Bill extends inventory {
                 ob.inventoryItem[i].product_quantity -= quantity;
                 System.out.println(bill_item[counter1 - 1].productId + " " + bill_item[counter1 - 1].productName + " " + bill_item[counter1 - 1].productQuantity + " " + bill_item[counter1 - 1].productPrice);
                 break;
-            } else if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity <= 0) {
+            } else if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity < 0) {
                 System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
                 break;
             } else if (i == ob.counter) {
@@ -44,6 +44,25 @@ class Bill extends inventory {
         }
     }
 
+    private void addBill(String giveName, int quantity, inventory ob) {
+        if (counter1 >= 2) {
+            this.bill_item = Arrays.copyOf(bill_item, counter1 + 1);
+        }
+        for (int i = 0; i < ob.counter; i++) {
+            if (ob.inventoryItem[i].product_name.equalsIgnoreCase(giveName) && ob.inventoryItem[i].product_quantity - quantity >= 0) {
+                bill_item[counter1++] = new Bill(ob.inventoryItem[i], quantity);
+                ob.inventoryItem[i].product_quantity -= quantity;
+                System.out.println(bill_item[counter1 - 1].productId + " " + bill_item[counter1 - 1].productName + " " + bill_item[counter1 - 1].productQuantity + " " + bill_item[counter1 - 1].productPrice);
+                break;
+            } else if (ob.inventoryItem[i].product_name.equals(giveName) && ob.inventoryItem[i].product_quantity - quantity < 0) {
+                System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
+                break;
+            } else if (i == ob.counter) {
+                System.out.println(" Wrong Name of Product");
+                break;
+            }
+        }
+    }
     private void billGenerator() {
         long start1 = System.currentTimeMillis();
         inventory myInventory = new inventory();
@@ -57,10 +76,10 @@ class Bill extends inventory {
             myInventory.addItems(i, "mango" + i, 9, 26);
         }
         //  System.out.println(myInventory.toString());
-        addBill(1, 3, myInventory);
+        addBill(1, 4, myInventory);
         addBill(2, 3, myInventory);
-        addBill(2, 2, myInventory);
-        addBill(4, 3, myInventory);
+        addBill("apple", 2, myInventory);
+        addBill("grapeS", 3, myInventory);
 
         System.out.println(billDisplay(total));
 
