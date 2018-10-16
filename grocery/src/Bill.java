@@ -1,12 +1,13 @@
 import java.util.Arrays;
+import java.util.Scanner;
 
 class Bill extends inventory {
+    //   private final String[] works = new String[]{"bill-id", "bill-name", "inventory-add", "inventory-update-id", "inventory-update-name", "inventory-update-price-id", "inventory-update-price-name", "inventory-search-id", "inventory-search-name", "stop-task", "Quit"};
     private Bill[] bill_item = new Bill[2];
     private int productId;
     private String productName;
     private int productQuantity;
     private double productPrice;
-
     private int counter1;
 
     private Bill(inventory ob, int quantity) {
@@ -25,48 +26,103 @@ class Bill extends inventory {
     }
 
     private void addBill(int giveId, int quantity, inventory ob) {
-        if (counter1 >= 2) {
-            this.bill_item = Arrays.copyOf(bill_item, counter1 + 1);
+        boolean checkitem = false;
+        int j;
+        for (j = 0; j < counter1; j++) {
+            if (giveId == bill_item[j].productId) {
+                checkitem = true;
+                break;
+            }
         }
-        for (int i = 0; i < ob.counter; i++) {
-            if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity >= 0) {
-                bill_item[counter1++] = new Bill(ob.inventoryItem[i], quantity);
-                ob.inventoryItem[i].product_quantity -= quantity;
-                System.out.println(bill_item[counter1 - 1].productId + " " + bill_item[counter1 - 1].productName + " " + bill_item[counter1 - 1].productQuantity + " " + bill_item[counter1 - 1].productPrice);
-                break;
-            } else if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity < 0) {
-                System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
-                break;
-            } else if (i == ob.counter) {
-                System.out.println(" Wrong Id of Product");
-                break;
+        if (checkitem) {
+            for (int i = 0; i < ob.counter; i++) {
+                if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity >= 0) {
+                    bill_item[j].productQuantity += quantity;
+                    bill_item[j].productPrice = bill_item[j].productQuantity * ob.inventoryItem[i].product_price;
+                    ob.inventoryItem[i].product_quantity -= quantity;
+                    System.out.println(bill_item[j].productId + " " + bill_item[j].productName + " " + bill_item[j].productQuantity + " " + bill_item[j].productPrice);
+
+                    System.out.println(ob.inventoryItem[i].product_id + "  " + ob.inventoryItem[i].product_name + "  " + ob.inventoryItem[i].product_quantity + "  " + ob.inventoryItem[i].product_price);
+
+                    break;
+                } else if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity < 0) {
+                    System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
+                    break;
+                }
+            }
+        } else {
+            if (counter1 >= 2) {
+                this.bill_item = Arrays.copyOf(bill_item, counter1 + 1);
+            }
+            for (int i = 0; i < ob.counter; i++) {
+                if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity >= 0) {
+                    bill_item[counter1++] = new Bill(ob.inventoryItem[i], quantity);
+                    ob.inventoryItem[i].product_quantity -= quantity;
+                    System.out.println(bill_item[counter1 - 1].productId + " " + bill_item[counter1 - 1].productName + " " + bill_item[counter1 - 1].productQuantity + " " + bill_item[counter1 - 1].productPrice);
+                    break;
+                } else if (ob.inventoryItem[i].product_id == giveId && ob.inventoryItem[i].product_quantity - quantity < 0) {
+                    System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
+                    break;
+                } else if (i == ob.counter - 1) {
+                    System.out.println(" Wrong Id of Product");
+                    break;
+                }
             }
         }
     }
 
     private void addBill(String giveName, int quantity, inventory ob) {
-        if (counter1 >= 2) {
-            this.bill_item = Arrays.copyOf(bill_item, counter1 + 1);
-        }
-        for (int i = 0; i < ob.counter; i++) {
-            if (ob.inventoryItem[i].product_name.equalsIgnoreCase(giveName) && ob.inventoryItem[i].product_quantity - quantity >= 0) {
-                bill_item[counter1++] = new Bill(ob.inventoryItem[i], quantity);
-                ob.inventoryItem[i].product_quantity -= quantity;
-                System.out.println(bill_item[counter1 - 1].productId + " " + bill_item[counter1 - 1].productName + " " + bill_item[counter1 - 1].productQuantity + " " + bill_item[counter1 - 1].productPrice);
-                break;
-            } else if (ob.inventoryItem[i].product_name.equals(giveName) && ob.inventoryItem[i].product_quantity - quantity < 0) {
-                System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
-                break;
-            } else if (i == ob.counter) {
-                System.out.println(" Wrong Name of Product");
+        boolean checkitem = false;
+        int j;
+        for (j = 0; j < counter1; j++) {
+            if (giveName.equals(bill_item[j].productName)) {
+                checkitem = true;
                 break;
             }
         }
+        if (checkitem) {
+            for (int i = 0; i < ob.counter; i++) {
+                if (ob.inventoryItem[i].product_name.equals(giveName) && ob.inventoryItem[i].product_quantity - quantity >= 0) {
+                    bill_item[j].productQuantity += quantity;
+                    bill_item[j].productPrice = bill_item[j].productQuantity * ob.inventoryItem[i].product_price;
+                    ob.inventoryItem[i].product_quantity -= quantity;
+                    System.out.println(bill_item[j].productId + " " + bill_item[j].productName + " " + bill_item[j].productQuantity + " " + bill_item[j].productPrice);
+
+                    System.out.println(ob.inventoryItem[i].product_id + "  " + ob.inventoryItem[i].product_name + "  " + ob.inventoryItem[i].product_quantity + "  " + ob.inventoryItem[i].product_price);
+
+                    break;
+                } else if (ob.inventoryItem[i].product_name.equals(giveName) && ob.inventoryItem[i].product_quantity - quantity < 0) {
+                    System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
+                    break;
+                }
+            }
+        } else {
+            if (counter1 >= 2) {
+                this.bill_item = Arrays.copyOf(bill_item, counter1 + 1);
+            }
+            for (int i = 0; i < ob.counter; i++) {
+                if (ob.inventoryItem[i].product_name.equalsIgnoreCase(giveName) && ob.inventoryItem[i].product_quantity - quantity >= 0) {
+                    bill_item[counter1++] = new Bill(ob.inventoryItem[i], quantity);
+                    ob.inventoryItem[i].product_quantity -= quantity;
+                    System.out.println(bill_item[counter1 - 1].productId + " " + bill_item[counter1 - 1].productName + " " + bill_item[counter1 - 1].productQuantity + " " + bill_item[counter1 - 1].productPrice);
+                    break;
+                } else if (ob.inventoryItem[i].product_name.equals(giveName) && ob.inventoryItem[i].product_quantity - quantity < 0) {
+                    System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
+                    break;
+                } else if (i == ob.counter - 1) {
+                    System.out.println(" Wrong Name of Product");
+                    break;
+                }
+            }
+        }
+
     }
+
     private void billGenerator() {
         long start1 = System.currentTimeMillis();
-        inventory myInventory = new inventory();
+        final inventory myInventory = new inventory();
         float total = 0;
+        Scanner scan = new Scanner(System.in);
         myInventory.addItems(1, "orange", 4, 24);
         myInventory.addItems(2, "apple", 3, 25.5);
         myInventory.addItems(5, "apple", 2, 25);
@@ -76,11 +132,11 @@ class Bill extends inventory {
             myInventory.addItems(i, "mango" + i, 9, 26);
         }
         //  System.out.println(myInventory.toString());
+        //addBillLoop(myInventory);
         addBill(1, 4, myInventory);
         addBill(2, 3, myInventory);
         addBill("apple", 2, myInventory);
         addBill("grapeS", 3, myInventory);
-
         System.out.println(billDisplay(total));
 
         System.out.println("\n Inventory after bill generated....\n");
@@ -110,6 +166,49 @@ class Bill extends inventory {
 
         long end = System.currentTimeMillis();
         System.out.println(" time taken for program to run :" + (end - start));
+
+        String check;
+        String data;
+        do {
+            System.out.println("\n\t  What do you want to do:");
+            check = scan.nextLine();
+            switch (check.toLowerCase()) {
+
+                case "bill":
+                    do {
+                        System.out.println("Enter ID or NAME of the product:\nTo generate bill type STOP");
+                        data = scan.next();
+                        if (data.matches("^[\\d]+$")) {
+                            int id = Integer.parseInt(data);
+                            System.out.println("Enter the quantity:");
+                            data = scan.next();
+                            if (data.matches("^[\\d]+$")) {
+                                int quantity = Integer.parseInt(data);
+                                addBill(id, quantity, myInventory);
+                            } else if (data.equalsIgnoreCase("stop")) {
+                                System.out.println(billDisplay(total));
+                            } else {
+                                System.out.println("wrong input quantity : please try again\nwrite the id and quantity again");
+                            }
+                        } else if (data.equalsIgnoreCase("stop")) {
+                            System.out.println(billDisplay(total));
+                        } else if (data.matches("^(.+)+$")) {
+                            String name = data;
+                            System.out.println("Enter the quantity:");
+                            data = scan.next();
+                            if (data.matches("^[\\d]+$")) {
+                                int quantity = Integer.parseInt(data);
+                                addBill(name, quantity, myInventory);
+                            } else if (data.equalsIgnoreCase("stop")) {
+                                System.out.println(billDisplay(total));
+                            } else {
+                                System.out.println("wrong input quantity : please try again\nwrite the name and quantity again");
+                            }
+                        }
+                    } while (!data.equalsIgnoreCase("stop"));
+                    break;
+            }
+        } while (!check.equalsIgnoreCase("Quit"));
     }
 
     private String billDisplay(double total) {
@@ -119,7 +218,7 @@ class Bill extends inventory {
         String message = "";
         for (int i = 0; i < counter1; i++) {
             message = message.concat("    " + bill_item[i].productId +
-                    "           " + bill_item[i].productName + '\'' +
+                    "       \t" + bill_item[i].productName + '\'' +
                     "          \t" + bill_item[i].productQuantity +
                     "           \t" + bill_item[i].productPrice +
                     "\n");
