@@ -75,14 +75,14 @@ class Bill extends inventory {
         boolean checkitem = false;
         int j;
         for (j = 0; j < counter1; j++) {
-            if (giveName.equals(bill_item[j].productName)) {
+            if (giveName.equalsIgnoreCase(bill_item[j].productName)) {
                 checkitem = true;
                 break;
             }
         }
         if (checkitem) {
             for (int i = 0; i < ob.counter; i++) {
-                if (ob.inventoryItem[i].product_name.equals(giveName) && ob.inventoryItem[i].product_quantity - quantity >= 0) {
+                if (ob.inventoryItem[i].product_name.equalsIgnoreCase(giveName) && ob.inventoryItem[i].product_quantity - quantity >= 0) {
                     bill_item[j].productQuantity += quantity;
                     bill_item[j].productPrice = bill_item[j].productQuantity * ob.inventoryItem[i].product_price;
                     ob.inventoryItem[i].product_quantity -= quantity;
@@ -91,7 +91,7 @@ class Bill extends inventory {
                     System.out.println(ob.inventoryItem[i].product_id + "  " + ob.inventoryItem[i].product_name + "  " + ob.inventoryItem[i].product_quantity + "  " + ob.inventoryItem[i].product_price);
 
                     break;
-                } else if (ob.inventoryItem[i].product_name.equals(giveName) && ob.inventoryItem[i].product_quantity - quantity < 0) {
+                } else if (ob.inventoryItem[i].product_name.equalsIgnoreCase(giveName) && ob.inventoryItem[i].product_quantity - quantity < 0) {
                     System.out.println("We are out of stock for " + ob.inventoryItem[i].product_name);
                     break;
                 }
@@ -134,7 +134,7 @@ class Bill extends inventory {
         //  System.out.println(myInventory.toString());
         //addBillLoop(myInventory);
         addBill(1, 4, myInventory);
-        addBill(2, 3, myInventory);
+        addBill(9999, 3, myInventory);
         addBill("apple", 2, myInventory);
         addBill("grapeS", 3, myInventory);
         System.out.println(billDisplay(total));
@@ -171,20 +171,24 @@ class Bill extends inventory {
         String data;
         do {
             System.out.println("\n\t  What do you want to do:");
+            scan.reset();
             check = scan.nextLine();
             switch (check.toLowerCase()) {
-
                 case "bill":
                     do {
                         System.out.println("Enter ID or NAME of the product:\nTo generate bill type STOP");
-                        data = scan.next();
+                        scan.reset();
+                        data = scan.nextLine();
+                        scan.reset();
                         if (data.matches("^[\\d]+$")) {
                             int id = Integer.parseInt(data);
                             System.out.println("Enter the quantity:");
-                            data = scan.next();
+                            data = scan.nextLine();
+                            scan.reset();
                             if (data.matches("^[\\d]+$")) {
                                 int quantity = Integer.parseInt(data);
                                 addBill(id, quantity, myInventory);
+                                scan.reset();
                             } else if (data.equalsIgnoreCase("stop")) {
                                 System.out.println(billDisplay(total));
                             } else {
@@ -192,20 +196,93 @@ class Bill extends inventory {
                             }
                         } else if (data.equalsIgnoreCase("stop")) {
                             System.out.println(billDisplay(total));
-                        } else if (data.matches("^(.+)+$")) {
+                        } else if (data.matches("[\\w&&\\S]+([.]|[*])*([\\w&&\\S])*")) {
                             String name = data;
+                            scan.reset();
                             System.out.println("Enter the quantity:");
-                            data = scan.next();
+                            data = scan.nextLine();
+                            scan.reset();
                             if (data.matches("^[\\d]+$")) {
                                 int quantity = Integer.parseInt(data);
                                 addBill(name, quantity, myInventory);
+                                scan.reset();
                             } else if (data.equalsIgnoreCase("stop")) {
                                 System.out.println(billDisplay(total));
                             } else {
                                 System.out.println("wrong input quantity : please try again\nwrite the name and quantity again");
+                                scan.reset();
                             }
+                        } else {
+                            System.out.println("Wrong input");
+                            scan.reset();
                         }
+                        scan.reset();
                     } while (!data.equalsIgnoreCase("stop"));
+                    break;
+                case "search":
+                    do {
+                        System.out.println("Enter ID or NAME of the product to search:\nTo stop this work type STOP");
+                        data = scan.nextLine();
+                        scan.reset();
+                        if (data.matches("^[\\d]+$")) {
+                            int id = Integer.parseInt(data);
+                            myInventory.searchItems(id);
+                        } else if (data.equalsIgnoreCase("stop")) {
+                            System.out.print("");
+                        } else {
+                            myInventory.searchItems(data);
+                        }
+                        scan.reset();
+                    } while (!data.equalsIgnoreCase("stop"));
+                    break;
+                case "additem":
+                    do {
+                        System.out.println("Enter Id of new product :\n To stop this work type STOP");
+                        data = scan.nextLine();
+                        scan.reset();
+                        if (data.matches("^[\\d]+$")) {
+                            int id_ = Integer.parseInt(data);
+                            System.out.println("Enter Name of new product:");
+                            data = scan.nextLine();
+                            scan.reset();
+                            if (data.matches("[\\w&&\\S]+([.]|[*])*([\\w&&\\S])*")) {
+                                String name_ = data;
+                                System.out.println("Enter Quantity of new product:");
+                                data = scan.nextLine();
+                                scan.reset();
+                                if (data.matches("^[\\d]+$")) {
+                                    int quant_ = Integer.parseInt(data);
+                                    System.out.println("Enter Price of single piece of new product( price/item ):");
+                                    data = scan.nextLine();
+                                    scan.reset();
+                                    if (data.matches("[\\d]+([.]\\d+)*")) {
+                                        double prc_ = Double.parseDouble(data);
+                                        myInventory.addItems(id_, name_, quant_, prc_);
+                                    } else if (data.equalsIgnoreCase("stop")) {
+                                        System.out.print("");
+                                    } else {
+                                        System.out.println("Wrong input: type a valid Price");
+                                    }
+                                } else if (data.equalsIgnoreCase("stop")) {
+                                    System.out.print("");
+                                } else {
+                                    System.out.println("Wrong input: type a valid Quantity");
+                                }
+                            } else if (data.equalsIgnoreCase("stop")) {
+                                System.out.print("");
+                            } else {
+                                System.out.println("Wrong input: type a valid Name");
+                            }
+                        } else if (data.equalsIgnoreCase("stop")) {
+                            System.out.print("");
+                        } else {
+                            System.out.println("Wrong input: type a valid Id");
+                        }
+                        scan.reset();
+                    } while (!data.equalsIgnoreCase("stop"));
+                    break;
+                default:
+                    System.out.println("Type a valid task to perform");
                     break;
             }
         } while (!check.equalsIgnoreCase("Quit"));
@@ -217,10 +294,10 @@ class Bill extends inventory {
                 "---------------------------------------------------------------");
         String message = "";
         for (int i = 0; i < counter1; i++) {
-            message = message.concat("    " + bill_item[i].productId +
-                    "       \t" + bill_item[i].productName + '\'' +
-                    "          \t" + bill_item[i].productQuantity +
-                    "           \t" + bill_item[i].productPrice +
+            message = message.concat("   \t" + bill_item[i].productId +
+                    "\t\t\t\t" + bill_item[i].productName +
+                    "\t\t\t\t" + bill_item[i].productQuantity +
+                    "\t\t\t\t" + bill_item[i].productPrice +
                     "\n");
             total = total + bill_item[i].productPrice;
         }
