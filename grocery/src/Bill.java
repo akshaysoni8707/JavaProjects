@@ -9,6 +9,7 @@ class Bill extends inventory {
     private int productQuantity;
     private double productPrice;
     private int counter1;
+    private String discountMessage;
 
     private Bill(inventory ob, int quantity) {
         this.productId = ob.product_id;
@@ -16,13 +17,33 @@ class Bill extends inventory {
         this.productQuantity = quantity;
         this.productPrice = productQuantity * ob.product_price;
     }
-
     private Bill() {
     }
 
+    private void billReset() {
+        if (bill_item[0] != null) {
+            bill_item = null;
+            bill_item = new Bill[2];
+            counter1 = 0;
+        }
+    }
     public static void main(String[] args) {
         Bill a = new Bill();
         a.billGenerator();
+    }
+
+    private double discount(double total_) {
+        try {
+            if (total_ >= 500) {
+                discountMessage = "you are illigible for dicount of 10 % \n\t\t\t\t\t\t\t\t\t\t\tdiscount :-" + (total_ / 10);
+                total_ = total_ - (total_ / 10);
+            } else {
+                throw new ArithmeticException("you are not illigible for discount");
+            }
+        } catch (Exception e) {
+            discountMessage = e.getMessage();
+        }
+        return total_;
     }
 
     private void addBill(int giveId, int quantity, inventory ob) {
@@ -214,16 +235,17 @@ class Bill extends inventory {
     }
 
     private void billGenerator() {
-        long start1 = System.currentTimeMillis();
+        //  long start1 = System.currentTimeMillis();
         final inventory myInventory = new inventory();
+        Bill.customers myCustomer = new Bill.customers();
         float total = 0;
         Scanner scan = new Scanner(System.in);
         myInventory.addItems(1, "orange", 4, 24);
         myInventory.addItems(2, "apple", 3, 25.5);
-        myInventory.addItems(5, "apple", 2, 25);
+        //myInventory.addItems(5, "apple", 2, 25);
         myInventory.addItems(3, "mango", 9, 26);
         myInventory.addItems(4, "grapes", 5, 27);
-        for (int i = 5; i < 10000; i++) {
+       /* for (int i = 5; i < 10000; i++) {
             myInventory.addItems(i, "mango" + i, 9, 26);
         }
         //  System.out.println(myInventory.toString());
@@ -257,15 +279,22 @@ class Bill extends inventory {
         myInventory.searchItems("mango9905");
         myInventory.searchItems("mango9998");
         myInventory.searchItems(9980);
-        myInventory.searchItems(9999);
+        myInventory.searchItems(9999);*/
 
-        long end = System.currentTimeMillis();
-        System.out.println(" time taken for program to run :" + (end - start));
+        //  long end = System.currentTimeMillis();
+        // System.out.println(" time taken for program to run :" + (end - start));
 
         String check;
         String data;
         do {
-            System.out.println("\n\n\t  What do you want to do:\nBill : To add item to your bill\nAdditem : To add new item to inventory\nUpdateitem : To update an exsiting item in inventory\nSearch : to search any particular item from inventory\nStop : To stop current work\nQuit : To quit the program\n");
+            System.out.println("\n\n\t  What do you want to do:\n" +
+                    "Bill : To add item to your bill\nAdditem : To add new item to inventory\n" +
+                    "Updateitem : To update an exsiting item in inventory\n" +
+                    "Search : to search any particular item from inventory\n" +
+                    "allcustomer : displays all customers with their bills\n" +
+                    "searchcustomer : search a particular customer display all his/her bills\n" +
+                    "Stop : To stop current work\n" +
+                    "Quit : To quit the program\n");
             scan.reset();
             check = scan.nextLine();
             switch (check.toLowerCase()) {
@@ -285,12 +314,24 @@ class Bill extends inventory {
                                 addBill(id, quantity, myInventory);
                                 scan.reset();
                             } else if (data.equalsIgnoreCase("stop")) {
-                                System.out.println(billDisplay(total));
+                                if (bill_item[0] == null) {
+                                    System.out.println("\nNo bill created.....");
+                                } else {
+                                    System.out.println(billDisplay(total));
+                                    myCustomer.addCustomer(getName(), billDisplay(total));
+                                    billReset();
+                                }
                             } else {
                                 System.out.println("\nwrong input quantity : please try again\nwrite the id and quantity again");
                             }
                         } else if (data.equalsIgnoreCase("stop")) {
-                            System.out.println(billDisplay(total));
+                            if (bill_item[0] == null) {
+                                System.out.println("\nNo bill created.....");
+                            } else {
+                                System.out.println(billDisplay(total));
+                                myCustomer.addCustomer(getName(), billDisplay(total));
+                                billReset();
+                            }
                         } else if (data.matches("([\\w&&\\S]+([.]|[*])*([\\w&&\\S])*)+")) {
                             String name = data;
                             scan.reset();
@@ -302,7 +343,13 @@ class Bill extends inventory {
                                 addBill(name, quantity, myInventory);
                                 scan.reset();
                             } else if (data.equalsIgnoreCase("stop")) {
-                                System.out.println(billDisplay(total));
+                                if (bill_item[0] == null) {
+                                    System.out.println("\nNo bill created.....");
+                                } else {
+                                    System.out.println(billDisplay(total));
+                                    myCustomer.addCustomer(getName(), billDisplay(total));
+                                    billReset();
+                                }
                             } else {
                                 System.out.println("\nwrong input quantity : please try again\nwrite the name and quantity again");
                                 scan.reset();
@@ -436,6 +483,12 @@ class Bill extends inventory {
                         }
                     } while (!data.equalsIgnoreCase("stop"));
                     break;
+                case "allcustomer":
+                    myCustomer.displayCustomer();
+                    break;
+                case "searchcustomer":
+                    myCustomer.displayCustomer(getName());
+                    break;
                 case "quit":
                     System.out.println("\n\n\t\tTHANK YOU \n\t\t BYE.........");
                     break;
@@ -445,11 +498,9 @@ class Bill extends inventory {
             }
         } while (!check.equalsIgnoreCase("Quit"));
     }
+
     private String billDisplay(double total) {
-        System.out.println("--------------------------- B I L L ---------------------------");
-        System.out.println("Product_id    Product_name    Product_quantity    Product_price\n" +
-                "---------------------------------------------------------------");
-        String message = "";
+        String message = "--------------------------- B I L L ---------------------------\nProduct_id    Product_name    Product_quantity    Product_price\n\n---------------------------------------------------------------\n";
         for (int i = 0; i < counter1; i++) {
             message = message.concat("   \t" + bill_item[i].productId +
                     "\t\t\t\t" + bill_item[i].productName +
@@ -460,9 +511,84 @@ class Bill extends inventory {
         }
         message = message.concat("---------------------------------------------------------------");
         message = message.concat("\n\t\t\t\t\t\t\t\t\t\tYour Total : " + total + "\n");
+        total = discount(total);
+        message = message.concat("\n" + discountMessage + "\n");
+        message = message.concat("\n\t\t\t\t\t\t\t\t\t\tRonded Total : " + Math.round(total) + "\n");
         message = message.concat("---------------------------------------------------------------\n");
         return message;
     }
+
+    private String getName() {
+        System.out.println("\n\t Enter customer name:");
+        Scanner sc = new Scanner(System.in);
+        sc.reset();
+        String name = sc.nextLine();
+        sc.reset();
+        if (name.matches("^[\\w]+$")) {
+            return name;
+        } else {
+            return getName();
+        }
+    }
+
+    class customers {
+        customers[] customer = new customers[2];
+        String customerName;
+        String customerBill;
+        int counter3;
+
+        customers() {
+
+        }
+
+        customers(String name, String bill) {
+            customerName = name;
+            customerBill = bill;
+        }
+
+        void addCustomer(String name_, String bill_) {
+            int j;
+            boolean checking = false;
+            for (j = 0; j < counter3; j++) {
+                if (customer[j].customerName.equals(name_)) {
+                    customer[j].customerBill = customer[j].customerBill.concat("\n\n" + bill_);
+                    checking = true;
+                    break;
+                }
+            }
+            if (!checking) {
+                if (counter3 >= 2) {
+                    this.customer = Arrays.copyOf(customer, counter3 + 1);
+                    customer[counter3++] = new customers(name_, bill_);
+                } else {
+                    customer[counter3++] = new customers(name_, bill_);
+                }
+            }
+        }
+
+        void displayCustomer() {
+            for (int i = 0; i < counter3; i++) {
+                System.out.println(customer[i].customerName + "\n" + customer[i].customerBill + "\n\n");
+            }
+        }
+
+        void displayCustomer(String name) {
+            try {
+                for (int i = 0; i < counter3; i++) {
+                    if (name.equalsIgnoreCase(customer[i].customerName)) {
+                        System.out.println(customer[i].customerName + "\n" + customer[i].customerBill + "\n\n");
+                        break;
+                    } else if (i == counter3 - 1) {
+                        throw new ArithmeticException("\nCustomer name not found");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+
 }
 
 class inventory {
