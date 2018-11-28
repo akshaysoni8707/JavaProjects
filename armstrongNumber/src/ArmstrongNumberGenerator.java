@@ -1,5 +1,3 @@
-import java.util.Random;
-
 public class ArmstrongNumberGenerator {
     public static void main(String[] args) {
         /*Random random = new Random();
@@ -11,11 +9,11 @@ public class ArmstrongNumberGenerator {
             number = lastNumber;
             lastNumber = temp;
         }*/
-        Integer number = 1;
+        int number = 1;
         int lastNumber = 1000;
         int sum = 0;
         do {
-            String s = number.toString();
+            String s = Integer.toString(number);
             char[] c = s.toCharArray();
             for (int i = 0; i < s.length(); i++) {
                 sum = ( int ) (sum + Math.pow((c[i] - 48), 3));

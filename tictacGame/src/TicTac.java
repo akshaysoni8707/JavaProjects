@@ -19,7 +19,7 @@ public class TicTac {
 
     public static void main(String[] args) {
         TicTac t = new TicTac();
-        int numberOfGames = 200;
+        int numberOfGames = 1;
         long start, end;
         start = System.currentTimeMillis();
         do {
@@ -111,8 +111,8 @@ public class TicTac {
                 attack();
                 switchPlayer();
             }
-            //    display();
-            //   System.out.println("\n");
+            display();
+            System.out.println("\n");
         } while (!filled() && !checkWin());
         if (checkWin()) {
             switchPlayer();

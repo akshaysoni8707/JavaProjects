@@ -12,7 +12,7 @@ class RandomCardGenerator {
     char cardType1, cardType2, cardType3, cardType4, cardType5, cardType6;
     String cardNum1, cardNum2, cardNum3, cardNum4, cardNum5, cardNum6;
     char spade = '\u2660', diamond = '\u2666', heart = '\u2665', clubs = '\u2663';
-
+    static long start, end;
     void CardGenerator() {
 
         Random random = new Random();
@@ -226,7 +226,7 @@ class ToSymbol extends TypeAndNumber {
 class GameLogic extends ToSymbol {
 
 
-    void display() {
+    private void display() {
         symbolizing();
         System.out.println(" _____\t _____ \t _____");
         System.out.println("|" + cardNum1 + "   |\t" + "|" + cardNum2 + "   |\t" + "|" + cardNum3 + "   " + "|");
@@ -235,7 +235,7 @@ class GameLogic extends ToSymbol {
         System.out.println("|     |\t|     |\t|     |");
         System.out.println("|_____|\t|_____|\t|_____|");
         System.out.println();
-        System.out.println("----------------------------------------------");
+        System.out.println("---------------------------------------");
         System.out.println(" _____\t _____ \t _____");
         System.out.println("|" + cardNum4 + "   |\t" + "|" + cardNum5 + "   |\t" + "|" + cardNum6 + "   " + "|");
         System.out.println("|     |\t|     |\t|     |    COMPUTER");
@@ -296,7 +296,7 @@ class GameLogic extends ToSymbol {
                 } else if (cardNumber[maxCardComputer] < cardNumber[maxCardPlayer]) {
                     //         amtPlayer = amtPlayer + (totalbet * 2);
                     display();
-                    System.out.println("NAme wins SameType,Number in sequence");
+                    System.out.println("Name wins SameType,Number in sequence");
                 } else if (cardNumber[maxCardComputer] == cardNumber[maxCardPlayer]) {
                     if (cardType[0] > cardType[3]) {
                         //             amtPlayer = amtPlayer + (totalbet * 2);
@@ -368,11 +368,11 @@ class GameLogic extends ToSymbol {
                 if (cardType[0] > cardType[3]) {
                     //        amtPlayer = amtPlayer + (totalbet * 2);
                     display();
-                    System.out.println("Name wins ,both have all cards same respective type but Name has high card");
+                    System.out.println("Name wins ,both have all cards same respective type but Name has high card type");
                 } else {
                     //      amtComputer = amtComputer + (totalbet * 2);
                     display();
-                    System.out.println("Computer wins ,both have all cards same respective type but Computer has high card");
+                    System.out.println("Computer wins ,both have all cards same respective type but Computer has high card type");
                 }
             } else {
                 //             amtPlayer = amtPlayer + (totalbet * 2);
@@ -418,7 +418,10 @@ class Game extends GameLogic {
 public class TeenPatti extends Game {
     public static void main(String[] args) {
         Game g = new Game();
+        start = System.currentTimeMillis();
         g.play();
+        end = System.currentTimeMillis();
+        System.out.println("start :" + start + " end :" + end + " time taken : " + (end - start));
     }
 }
 

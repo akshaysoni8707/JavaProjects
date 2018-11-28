@@ -17,7 +17,13 @@ class Bill extends inventory {
         this.productQuantity = quantity;
         this.productPrice = productQuantity * ob.product_price;
     }
+
     private Bill() {
+    }
+
+    public static void main(String[] args) {
+        Bill a = new Bill();
+        a.billGenerator();
     }
 
     private void billReset() {
@@ -26,10 +32,6 @@ class Bill extends inventory {
             bill_item = new Bill[2];
             counter1 = 0;
         }
-    }
-    public static void main(String[] args) {
-        Bill a = new Bill();
-        a.billGenerator();
     }
 
     private double discount(double total_) {

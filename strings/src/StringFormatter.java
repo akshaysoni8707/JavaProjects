@@ -21,7 +21,16 @@ public class StringFormatter {
         s.add(3, "Monu");
         s.add(4, "Sumit");
         s.add(5, "Kriti");
-        System.out.println(s);
+        s.add(6, "");
+        //    s.add(7, "");
+        s.add(8, "");
+        s.add(9, "");
+        s.add(10, "");
+        s.add(11, "");
+        s.add(12, "");
+        s.add(13, "");
+
+        System.out.println(s + "\n length of array made : " + s.card.length);
     }
 
     private void add(int number, String cardDetail) {
