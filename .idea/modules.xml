@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Java3/Java3.iml" filepath="$PROJECT_DIR$/Java3/Java3.iml" />
       <module fileurl="file://$PROJECT_DIR$/JavaProjects.iml" filepath="$PROJECT_DIR$/JavaProjects.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PUBG/PUBG.iml" filepath="$PROJECT_DIR$/PUBG/PUBG.iml" />
       <module fileurl="file://$PROJECT_DIR$/armstrongNumber/armstrongNumber.iml" filepath="$PROJECT_DIR$/armstrongNumber/armstrongNumber.iml" />
       <module fileurl="file://$PROJECT_DIR$/experimentDatatypes/experimentDatatypes.iml" filepath="$PROJECT_DIR$/experimentDatatypes/experimentDatatypes.iml" />
       <module fileurl="file://$PROJECT_DIR$/grocery/grocery.iml" filepath="$PROJECT_DIR$/grocery/grocery.iml" />

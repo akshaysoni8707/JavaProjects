@@ -242,7 +242,7 @@ public class Player implements Runnable {
                     totalMatches++;
                     break;
                 }
-            } while ((p1.life > 0) || (p1.life > 0));
+            } while ((p1.life > 0) || (p2.life > 0));
         } catch (Exception e) {
             System.out.println("Fight Error : " + e.getMessage());
         }
