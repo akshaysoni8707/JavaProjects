@@ -168,7 +168,7 @@ final class PUBG implements Runnable {
 
     private void squadCreator() {
         int newRandom, countPlayer = 0;
-        int MAX_PLAYER_LIMIT = 20;
+        int MAX_PLAYER_LIMIT = 100;
         do {
             if (counter >= 5) {
                 this.mySquad = Arrays.copyOf(mySquad, mySquad.length + 1);

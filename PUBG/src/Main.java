@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         PUBG pubg = new PUBG();
         pubg.setGameObject(pubg);
-        ExecutorService executor = Executors.newFixedThreadPool(3);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
         pubg.game();
         try {
             System.out.println("\n\t\t\t\tPlease wait while game is loading.\n");
@@ -45,7 +45,7 @@ public class Main {
         while (!executor.isTerminated()) {
             //   executor.shutdown();
         }
-        System.out.println("\n\n Total squad and players information before game.......\n");
+        System.out.println("\n\n Total squad and players information after game.......\n");
         pubg.display();
         System.out.println("\n\n\n\n Winner Winner Chicken Dinner.......\n\n");
         pubg.finalWinner();
