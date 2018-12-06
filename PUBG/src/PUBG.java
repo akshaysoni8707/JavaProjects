@@ -16,7 +16,7 @@ final class PUBG implements Runnable {
         squadCreator();
     }
 
-    private void winDisplay(Player winner, Player losser) {
+    synchronized private void winDisplay(Player winner, Player losser) {
         System.out.print("\t\t\t\t");
         for (int i = 0; i < 45; i++) {
             System.out.print("-");
@@ -30,7 +30,7 @@ final class PUBG implements Runnable {
         System.out.println();
     }
 
-    void display() {
+  /*  void display() {
         for (int i = 0; i < 100; i++) {
             System.out.print("-");
         }
@@ -47,10 +47,77 @@ final class PUBG implements Runnable {
             System.out.print("-");
         }
         System.out.println("\n");
+    }*/
+
+    String finalWinner() {
+
+        StringBuilder winner = new StringBuilder();
+        winner.append("Squad Id : ")
+                .append(mySquad[winnerSquad_Id].squadId)
+                .append("\n")
+                .append("Player name\t\t\t\tDamage\t\tKills\t\tHeal\t\tLife")
+                .append("\n-------------------------------------------------------------------------------------\n");
+        for (int i = 0; i < mySquad[winnerSquad_Id].squadMembers.length; i++) {
+            winner.append(mySquad[winnerSquad_Id].squadMembers[i].name)
+                    .append("   \t  \t")
+                    .append(mySquad[winnerSquad_Id].squadMembers[i].damage)
+                    .append("   \t  \t")
+                    .append(mySquad[winnerSquad_Id].squadMembers[i].kills)
+                    .append("   \t  \t")
+                    .append(mySquad[winnerSquad_Id].squadMembers[i].heal)
+                    .append("   \t  \t")
+                    .append(mySquad[winnerSquad_Id].squadMembers[i].life)
+                    .append("\n");
+        }
+        winner.append("-------------------------------------------------------------------------------------\n");
+        return winner.toString();
     }
 
-    void finalWinner() {
-        System.out.println(mySquad[winnerSquad_Id]);
+    String initialDisplay() {
+        StringBuilder winner = new StringBuilder();
+        for (Squad aMySquad : mySquad) {
+            winner.append("\n-------------------------------------------------------------------------------------\n")
+                    .append("Squad Id : ")
+                    .append(aMySquad.squadId)
+                    .append("\n-------------------------------------------------------------------------------------\n");
+            for (int i = 0; i < aMySquad.squadMembers.length; i++) {
+                winner.append(aMySquad.squadMembers[i].name)
+                        .append("   \t  \t")
+                        .append("Connected..........\n");
+            }
+            winner.append("-------------------------------------------------------------------------------------\n\n");
+        }
+        return winner.toString();
+    }
+
+    String display() {
+
+        StringBuilder winner = new StringBuilder();
+        for (Squad aMySquad : mySquad) {
+            winner.append("\n-------------------------------------------------------------------------------------\n")
+                    .append("Squad Id : ")
+                    .append(aMySquad.squadId)
+                    .append("\n")
+                    .append("Player name\t\t\t\tDamage\t\tKills\t\tHeal\t\tLife")
+                    .append("\n-------------------------------------------------------------------------------------\n");
+            for (int i = 0; i < aMySquad.squadMembers.length; i++) {
+                winner.append(aMySquad.squadMembers[i].name)
+                        .append("   \t  \t")
+                        .append(aMySquad.squadMembers[i].damage)
+                        .append("   \t  \t")
+                        .append(aMySquad.squadMembers[i].kills)
+                        .append("   \t  \t")
+                        .append(aMySquad.squadMembers[i].heal)
+                        .append("   \t  \t")
+                        .append(aMySquad.squadMembers[i].life)
+                        .append("\n");
+            }
+            winner.append("-------------------------------------------------------------------------------------\n\n");
+        }
+        winner.append("Total number of matches played : ")
+                .append(totalMatches);
+
+        return winner.toString();
     }
 
     private int randomGenerator() {
@@ -62,6 +129,10 @@ final class PUBG implements Runnable {
             System.out.println("Random ERR : " + e.getMessage());
         }
         return randomData;
+    }
+
+    public void finalize() {
+        System.out.println("object is garbage collected");
     }
 
     private boolean win() {
@@ -78,20 +149,57 @@ final class PUBG implements Runnable {
         return false;
     }
 
+    private int healing(Player p) {
+        int heal_life = 0;
+        if (p.life < 20) {
+            heal_life = random.nextInt(60);
+        } else if (p.life < 40) {
+            heal_life = random.nextInt(40);
+        } else if (p.life < 60) {
+            heal_life = random.nextInt(20);
+        } else if (p.life < 75) {
+            heal_life = random.nextInt(5);
+        }
+        return heal_life;
+    }
+
+    private void updatePlayerStatus(int u_Id, int kill_, int damage_) {
+        int heal_;
+        outer4:
+        for (Squad aMySquad : mySquad) {
+            for (int j = 0; j < aMySquad.squadMembers.length; j++) {
+                if (aMySquad.squadMembers[j].uId == u_Id) {
+                    aMySquad.squadMembers[j].kills += kill_;
+                    aMySquad.squadMembers[j].damage += damage_;
+                    if (kill_ == 1) {
+                        heal_ = healing(aMySquad.squadMembers[j]);
+                        aMySquad.squadMembers[j].heal += heal_;
+                        aMySquad.squadMembers[j].life += heal_;
+                    }
+                    break outer4;
+                }
+            }
+        }
+    }
+
     private void fight(Pair p) {
         try {
             do {
                 int attack1 = randomGenerator(), attack2 = randomGenerator();
                 if (attack1 < attack2) {
                     p.player1.life = p.player1.life - (attack2 - attack1);
+                    p.player2.damage += (attack2 - attack1);
                 } else if (attack1 > attack2) {
                     p.player2.life = p.player2.life - (attack1 - attack2);
+                    p.player1.damage += (attack1 - attack2);
                 }
                 if (p.player1.life <= 0 && p.player2.life > 0) {
                     try {
                         winDisplay(p.player2, p.player1);
+                        updatePlayerStatus(p.player1.uId, 0, p.player1.damage);
                         updatePlayerStatus(p.player1.uId, false, false, 0);
                         squadAliveStatus(p.player1.squadId);
+                        updatePlayerStatus(p.player2.uId, 1, p.player2.damage);
                         updatePlayerStatus(p.player2.uId, true, false, p.player2.life);
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -102,7 +210,9 @@ final class PUBG implements Runnable {
                 } else if (p.player2.life <= 0 && p.player1.life > 0) {
                     try {
                         winDisplay(p.player1, p.player2);
+                        updatePlayerStatus(p.player1.uId, 1, p.player1.damage);
                         updatePlayerStatus(p.player1.uId, true, false, p.player1.life);
+                        updatePlayerStatus(p.player2.uId, 0, p.player2.damage);
                         updatePlayerStatus(p.player2.uId, false, false, 0);
                         squadAliveStatus(p.player2.squadId);
                         Thread.sleep(100);
@@ -168,13 +278,13 @@ final class PUBG implements Runnable {
 
     private void squadCreator() {
         int newRandom, countPlayer = 0;
-        int MAX_PLAYER_LIMIT = 100;
+        int MAX_PLAYER_LIMIT = 20;
         do {
             if (counter >= 5) {
                 this.mySquad = Arrays.copyOf(mySquad, mySquad.length + 1);
             }
             do {
-                newRandom = random.nextInt(3) + 1;
+                newRandom = random.nextInt(4) + 1;
             } while (countPlayer + newRandom > MAX_PLAYER_LIMIT);
             countPlayer += newRandom;
             mySquad[counter++] = new Squad(counter, "squad-" + counter, newRandom);
@@ -275,6 +385,9 @@ final class PUBG implements Runnable {
         private int life = 100;
         private boolean fightMode = false;
         private int squadId;
+        private int kills;
+        private int heal;
+        private int damage;
 
         Player(int id, String name, int squadId) {
             this.id = id;

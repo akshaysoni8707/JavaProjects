@@ -2,6 +2,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Main {
+
+
     static {
         System.out.println("              ________    __      __     __________    ___________ ");
         System.out.println("             |   __   |  |  |    |  |   |   ____   |  |   ________|");
@@ -14,6 +16,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        Runtime r = Runtime.getRuntime();
+        System.out.println("Total Memory: " + r.totalMemory());
+        System.out.println("Free Memory: " + r.freeMemory());
+
         PUBG pubg = new PUBG();
         pubg.setGameObject(pubg);
         ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -29,8 +35,8 @@ public class Main {
 
         }
         System.out.println("\n\n\t\t\t\tGame is Staring.");
-        System.out.println("\n\n Total squad and players information before game.......\n");
-        pubg.display();
+        System.out.println("\n\n Connecting players to server.......\n");
+        System.out.println(pubg.initialDisplay());
 
 
         do {
@@ -41,13 +47,17 @@ public class Main {
                 e.printStackTrace();
             }
         } while (pubg.getGameStatus());
+        System.out.println("After creating 10000 instance, Free Memory: " + r.freeMemory());
         executor.shutdown();
         while (!executor.isTerminated()) {
             //   executor.shutdown();
         }
         System.out.println("\n\n Total squad and players information after game.......\n");
-        pubg.display();
+        System.out.println(pubg.display());
         System.out.println("\n\n\n\n Winner Winner Chicken Dinner.......\n\n");
-        pubg.finalWinner();
+        System.out.println(pubg.finalWinner());
+        System.gc();
+        System.out.println("After gc(), Free Memory: " + r.freeMemory());
+
     }
 }
