@@ -131,10 +131,6 @@ final class PUBG implements Runnable {
         return randomData;
     }
 
-    public void finalize() {
-        System.out.println("object is garbage collected");
-    }
-
     private boolean win() {
         int winCounter = 0;
         for (int i = 0; i < mySquad.length; i++) {

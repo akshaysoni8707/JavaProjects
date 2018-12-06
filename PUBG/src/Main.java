@@ -16,10 +16,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Runtime r = Runtime.getRuntime();
-        System.out.println("Total Memory: " + r.totalMemory());
-        System.out.println("Free Memory: " + r.freeMemory());
-
         PUBG pubg = new PUBG();
         pubg.setGameObject(pubg);
         ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -47,7 +43,6 @@ public class Main {
                 e.printStackTrace();
             }
         } while (pubg.getGameStatus());
-        System.out.println("After creating 10000 instance, Free Memory: " + r.freeMemory());
         executor.shutdown();
         while (!executor.isTerminated()) {
             //   executor.shutdown();
@@ -56,8 +51,5 @@ public class Main {
         System.out.println(pubg.display());
         System.out.println("\n\n\n\n Winner Winner Chicken Dinner.......\n\n");
         System.out.println(pubg.finalWinner());
-        System.gc();
-        System.out.println("After gc(), Free Memory: " + r.freeMemory());
-
     }
 }
