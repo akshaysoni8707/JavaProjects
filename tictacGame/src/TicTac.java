@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class TicTac {
     static {
@@ -11,11 +12,14 @@ public class TicTac {
         System.out.println("\n\n");
     }
 
+    private Scanner sc = new Scanner(System.in);
     private char board[] = new char[9];
-    private char turn = 'O';
+    private char turn = 'X';
     private Random random = new Random();
     private int winX = 0;
     private int winO = 0;
+    private String name;
+    private char myChoice = 'O';
 
     public static void main(String[] args) {
         TicTac t = new TicTac();
@@ -29,6 +33,49 @@ public class TicTac {
         } while (numberOfGames > 0);
         end = System.currentTimeMillis();
         System.out.println("\n\t\t\t\t\t\t\t\t\t\t\tTime taken by the program to execute is : " + (end - start));
+    }
+
+    private void playersTurn() {
+        int r;
+        boolean check = false;
+        do {
+            System.out.println("\n\n\t\t\t\t\t\t\t\twhere do you wnt to play , select from 1 - 9 :");
+            try {
+                r = getChoice();
+                if (!(r > 0 && r < 10)) {
+                    Thread.sleep(1000);
+                    throw new NumberFormatException("Invalid Number");
+                }
+                r -= 1;
+                if (board[r] == ' ') {
+                    board[r] = turn;
+                    check = true;
+                } else if (board[r] == myChoice) {
+                    System.out.println("you already played there");
+                } else {
+                    System.out.println("computer played there");
+                }
+            } catch (Exception e) {
+                System.out.println("invalid choice. \t " + e);
+            }
+        } while (!check);
+    }
+
+    private int getChoice() {
+        String x = "1";
+
+        try {
+            x = sc.nextLine();
+            if (x.matches("^[1-9]$")) {
+
+            } else {
+
+                throw new NumberFormatException("Invalid Number");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return Integer.parseInt(x);
     }
 
     private void initializeBoard() {
@@ -112,6 +159,16 @@ public class TicTac {
                 switchPlayer();
             }
             display();
+            if (turn == myChoice && !checkWin() && !filled()) {
+                playersTurn();
+                switchPlayer();
+                display();
+            }
+            /*try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
             System.out.println("\n");
         } while (!filled() && !checkWin());
         if (checkWin()) {
@@ -124,12 +181,12 @@ public class TicTac {
             System.out.println();
             display();
             System.out.println("\n");
-            System.out.println("\t\t\t\t\t\t\t\t\t\t\t  CPU vs CPU : CPU playing with ' " + turn + " ' has won");
+            System.out.println("\t\t\t\t\t\t\t\t\t\t\t  " + turn + "  has won");
         } else {
             System.out.println();
             display();
             System.out.println("\n");
-            System.out.println("\t\t\t\t\t\t\t\t\t\t\t  CPU vs CPU : game is draw... ");
+            System.out.println("\t\t\t\t\t\t\t\t\t\t\t   game is draw... ");
         }
     }
 
@@ -139,7 +196,7 @@ public class TicTac {
 
     private void display() {
 
-        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t " + board[0] + " | " + board[1] + " | " + board[2] + "            CPU 1 'O' | CPU 2 'X'");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t " + board[0] + " | " + board[1] + " | " + board[2] + "           PLAYER 'O' | CPU  'X'");
         System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t---|---|---            ---------|---------");
         System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t " + board[3] + " | " + board[4] + " | " + board[5] + "                      |");
         System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t---|---|---" + "\t   \t\t\t\t" + winO + "\t|\t" + winX);

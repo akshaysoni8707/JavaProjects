@@ -58,9 +58,8 @@ public class FileStreamDemo {
             } catch (Exception e) {
                 System.out.println("Object parsing Err: " + e.getMessage());
             } finally {
-                objectOutputStream.flush();
-                objectOutputStream.close();
-                fout.close();
+                objectInputStream.close();
+                fin.close();
             }
         } catch (Exception e) {
             System.out.println("File parsing Err: " + e.getMessage());

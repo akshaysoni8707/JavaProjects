@@ -243,10 +243,10 @@ class Bill extends inventory {
         float total = 0;
         Scanner scan = new Scanner(System.in);
         myInventory.addItems(1, "orange", 4, 24);
-        myInventory.addItems(2, "apple", 3, 25.5);
+        //      myInventory.addItems(2, "apple", 3, 25.5);
         //myInventory.addItems(5, "apple", 2, 25);
-        myInventory.addItems(3, "mango", 9, 26);
-        myInventory.addItems(4, "grapes", 5, 27);
+        //     myInventory.addItems(3, "mango", 9, 26);
+        //      myInventory.addItems(4, "grapes", 5, 27);
        /* for (int i = 5; i < 10000; i++) {
             myInventory.addItems(i, "mango" + i, 9, 26);
         }

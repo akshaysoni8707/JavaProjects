@@ -18,18 +18,20 @@ final class PUBG implements Runnable {
         squadCreator();
     }
 
-    synchronized private void winDisplay(Player winner, Player losser) {
-        System.out.print("\t\t\t\t");
-        for (int i = 0; i < 45; i++) {
-            System.out.print("-");
+    private void winDisplay(Player winner, Player losser) {
+        synchronized (PUBG.class) {
+            System.out.print("\t\t\t\t");
+            for (int i = 0; i < 45; i++) {
+                System.out.print("-");
+            }
+            System.out.println("\n\t\t\t\t|\t" + winner.name + " VS " + losser.name + "\t|");
+            System.out.println("\t\t\t\t|\t\t" + winner.getLife() + "\t\t\t |\t\t\t" + losser.playerLifeStatus() + "\t\t\t|");
+            System.out.print("\t\t\t\t");
+            for (int i = 0; i < 45; i++) {
+                System.out.print("-");
+            }
+            System.out.println();
         }
-        System.out.println("\n\t\t\t\t|\t" + winner.name + " VS " + losser.name + "\t|");
-        System.out.println("\t\t\t\t|\t\t" + winner.getLife() + "\t\t\t |\t\t\t" + losser.playerLifeStatus() + "\t\t\t|");
-        System.out.print("\t\t\t\t");
-        for (int i = 0; i < 45; i++) {
-            System.out.print("-");
-        }
-        System.out.println();
     }
 
     String finalWinner() {

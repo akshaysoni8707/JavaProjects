@@ -20,6 +20,9 @@ public class SudokuGenerator {
         SudokuGenerator s = new SudokuGenerator();
         int n = 2, i = 1;
         long start = System.currentTimeMillis();
+        s.transpose();
+        s.shuffle();
+        s.seedChanger();
         while (i <= n) {
             System.out.println("------Number of Board : " + (i) + "  ----------\n");
             s.transpose();

@@ -220,7 +220,7 @@ class GamePlay implements Serializable {
             return true;
         }
         if ((balls <= 120) && (runs < target - 1) && (wickets == 10)) {
-            System.out.println(myTeams[bowlingteam].teamName + "  won by " + (target - runs - 1) + " runs , " + myTeams[battingTeam].teamName + " is Allout");
+            System.out.println(myTeams[bowlingteam].teamName + "  won by " + ((target - runs) - 1) + " runs , " + myTeams[battingTeam].teamName + " is Allout");
             myTeams[bowlingteam].matchesWon++;
             myTeams[battingTeam].matchesLost++;
             return true;
@@ -232,7 +232,7 @@ class GamePlay implements Serializable {
             return true;
         }
         if ((balls == 120) && (runs < target - 1) && (wickets <= 10)) {
-            System.out.println(myTeams[bowlingteam].teamName + "  won by " + (target - runs - 1) + " runs :end of overs ");
+            System.out.println(myTeams[bowlingteam].teamName + "  won by " + ((target - runs) - 1) + " runs :end of overs ");
             myTeams[bowlingteam].matchesWon++;
             myTeams[battingTeam].matchesLost++;
             return true;
