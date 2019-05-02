@@ -12,20 +12,31 @@ public class ArmstrongNumberGenerator {
             firstNumber = scanner.nextInt();
             System.out.println("\nEnter the final number\n");
             lastNumber = scanner.nextInt();
-            do {
-                String s = Integer.toString(firstNumber);
-                char[] c = s.toCharArray();
-                for (int i = 0; i < s.length(); i++) {
-                    sum = ( int ) (sum + Math.pow((c[i] - 48), c.length));
+            if (firstNumber == lastNumber) {
+                System.out.println("both initian and final numbers are same , no range to generate armstrong numbers");
+            } else {
+                if (firstNumber > lastNumber) {
+                    System.out.println("initial number is greater than final number so i will alter them and make a range from " + lastNumber + " to " + firstNumber);
+                    int temp = firstNumber;
+                    firstNumber = lastNumber;
+                    lastNumber = temp;
                 }
+                do {
+                    String s = Integer.toString(firstNumber);
+                    char[] c = s.toCharArray();
+                    for (int i = 0; i < s.length(); i++) {
+                        sum = ( int ) (sum + Math.pow((c[i] - 48), c.length));
+                    }
 
-                if (sum == firstNumber) {
-                    System.out.println("Number " + firstNumber + " is Armstrong");
-                }
-                ++firstNumber;
+                    if (sum == firstNumber) {
+                        System.out.println("Number " + firstNumber + " is Armstrong");
+                    }
+                    ++firstNumber;
 
-                sum = 0;
-            } while (firstNumber < lastNumber);
+                    sum = 0;
+                } while (firstNumber < lastNumber);
+
+            }
         } catch (Exception e) {
             System.out.println("invalid data");
         }
