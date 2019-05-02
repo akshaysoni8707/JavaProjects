@@ -16,7 +16,7 @@ public class ArmstrongNumberGenerator {
                 String s = Integer.toString(firstNumber);
                 char[] c = s.toCharArray();
                 for (int i = 0; i < s.length(); i++) {
-                    sum = ( int ) (sum + Math.pow((c[i] - 48), 3));
+                    sum = ( int ) (sum + Math.pow((c[i] - 48), c.length));
                 }
 
                 if (sum == firstNumber) {
