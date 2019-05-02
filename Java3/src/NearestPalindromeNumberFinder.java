@@ -3,7 +3,7 @@ public class NearestPalindromeNumberFinder {
 
 
         Integer number = 1;
-        int checkNumber = 7654321;
+        int checkNumber = 1563449;
         int check = 0;
         int temp = 0;
         int palin = 0;

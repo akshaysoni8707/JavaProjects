@@ -1,30 +1,34 @@
+import java.util.Scanner;
+
 public class ArmstrongNumberGenerator {
     public static void main(String[] args) {
-        /*Random random = new Random();
-
-        Integer number = random.nextInt(500)+1;
-        int lastNumber = random.nextInt(500)+1;
-        if(lastNumber<number){
-            int temp = number;
-            number = lastNumber;
-            lastNumber = temp;
-        }*/
-        int number = 1;
-        int lastNumber = 1000;
+        Scanner scanner = new Scanner(System.in);
+        int firstNumber;
+        int lastNumber;
         int sum = 0;
-        do {
-            String s = Integer.toString(number);
-            char[] c = s.toCharArray();
-            for (int i = 0; i < s.length(); i++) {
-                sum = ( int ) (sum + Math.pow((c[i] - 48), 3));
-            }
+        try {
+            System.out.println("\nYou will haveto enter initial and final number between which all the armstrong numbers you want to generate\n");
+            System.out.println("\nEnter the initial number\n");
+            firstNumber = scanner.nextInt();
+            System.out.println("\nEnter the final number\n");
+            lastNumber = scanner.nextInt();
+            do {
+                String s = Integer.toString(firstNumber);
+                char[] c = s.toCharArray();
+                for (int i = 0; i < s.length(); i++) {
+                    sum = ( int ) (sum + Math.pow((c[i] - 48), 3));
+                }
 
-            if (sum == number) {
-                System.out.println("Number " + number + " is Armstrong");
-            }
-            ++number;
+                if (sum == firstNumber) {
+                    System.out.println("Number " + firstNumber + " is Armstrong");
+                }
+                ++firstNumber;
 
-            sum = 0;
-        } while (number < lastNumber);
+                sum = 0;
+            } while (firstNumber < lastNumber);
+        } catch (Exception e) {
+            System.out.println("invalid data");
+        }
+
     }
 }

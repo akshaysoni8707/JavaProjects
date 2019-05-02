@@ -56,7 +56,7 @@ public class TicTac {
                     System.out.println("computer played there");
                 }
             } catch (Exception e) {
-                System.out.println("invalid choice. \t " + e);
+                System.out.println("invalid choice. \t ");
             }
         } while (!check);
     }
