@@ -20,7 +20,7 @@ public class ArmstrongNumberGenerator {
             lastNumber = scanner.nextInt();
             armstrongGenerator(firstNumber, lastNumber);
         } catch (InputMismatchException e) {
-            System.out.println(e + "Only integers allowed as input");
+            System.out.println(e + "\t: Only integers allowed as input");
         }
     }
 
@@ -40,15 +40,12 @@ public class ArmstrongNumberGenerator {
                 for (int i = 0; i < s.length(); i++) {
                     sum = ( int ) (sum + Math.pow((c[i] - 48), c.length));
                 }
-
                 if (sum == firstNumber) {
                     System.out.println("Number " + firstNumber + " is Armstrong");
                 }
                 ++firstNumber;
-
                 sum = 0;
             } while (firstNumber <= lastNumber);
-
         }
     }
 }
