@@ -9,10 +9,10 @@ import java.util.LinkedHashMap;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class MapSelector implements Serializable {
     public static final long serialVersionUID = 1L;
-    LinkedHashMap<String, MapSelector> nest = new LinkedHashMap<>();
     private String id;
     private String name;
     private String type;
+    LinkedHashMap<String, MapSelector> nest = new LinkedHashMap<>();
 
     public MapSelector(String id, String name, String type) {
         this.id = id;
@@ -43,14 +43,14 @@ public class MapSelector implements Serializable {
     public void work() {
         LinkedHashMap<String, MapSelector> data = new LinkedHashMap<>();
         data.put("India", new MapSelector("+91", "India", "Country"));
-        data.get("India").nest.put("Gujarat", new MapSelector("GJ", "gujarat", "State"));
+        data.get("India").nest.putIfAbsent("Gujarat", new MapSelector("GJ", "gujarat", "State"));
         data.get("India").nest.get("Gujarat").nest.put("Surat", new MapSelector("395009", "surat", "city"));
-        data.get("India").nest.put("Gujarat", new MapSelector("GJ", "gujarat", "State"));
-        data.get("India").nest.put("Rajasthan", new MapSelector("RJ", "rajasthan", "State"));
-        if (!data.containsKey("India")) {
-            data.put("India", new MapSelector("+91", "India", "Country"));
-        }
-        //  System.out.println(data);
+        data.get("India").nest.putIfAbsent("Gujarat", new MapSelector("GJ", "gujarat", "State"));
+        data.get("India").nest.putIfAbsent("Rajasthan", new MapSelector("RJ", "rajasthan", "State"));
+//        if (!data.containsKey("India")) {
+//            data.put("India", new MapSelector("+91", "India", "Country"));
+//        }
+//        //  System.out.println(data);
         data.put("USA", new MapSelector("+XX", "USA", "Country"));
         System.out.println(data);
         //new MapSelector().display(data);
