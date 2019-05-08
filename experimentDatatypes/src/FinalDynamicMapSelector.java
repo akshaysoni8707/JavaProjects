@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -36,8 +37,12 @@ class Template {
         if (!this.v.equals("")) {
             sb.append("\"").append(this.v).append("\"");
         }
-        for (Map.Entry entry : nest.entrySet()) {
-            sb.append("\n").append(loop(i1)).append("{").append("\"").append(entry.getKey()).append("\"").append(":").append(entry.getValue().toString()).append("\n").append(loop(i1)).append("}");
+        for (Iterator<Map.Entry<String, Template>> iterator = nest.entrySet().iterator(); iterator.hasNext(); ) {
+            Map.Entry entry = iterator.next();
+            sb.append("\n").append(loop(i1)).append("\"").append(entry.getKey()).append("\"").append(":").append("{").append(entry.getValue().toString()).append("\n").append(loop(i1)).append("}");
+            if (iterator.hasNext()) {
+                sb.append(",");
+            }
         }
         i--;
         return sb.toString();
@@ -62,12 +67,10 @@ public class FinalDynamicMapSelector {
         template.getNest("India").getNest("Maharashtra").makeNest("Pune");
         template.getNest("India").getNest("Rajasthan").makeNest("Jaipur");
         template.getNest("India").getNest("Rajasthan").makeNest("Udaipur");
-        template.getNest("India").getNest("Gujarat").putValue("dslkvzksldcvksvdslsdjkb,kfsiugfsugclzscglzsbc");
         template.makeNest("USA");
         template.getNest("USA").makeNest("NewYork");
-        template.getNest("USA").getNest("NewYork").putValue("afdsxfbcb");
         template.getNest("India").getNest("Gujarat").getNest("Surat").makeNest("River");
-        template.getNest("India").getNest("Gujarat").getNest("Surat").getNest("River").putValue("Tapi");
+        template.getNest("India").getNest("Gujarat").getNest("Surat").getNest("River").makeNest("Tapi");
         template.getNest("India").getNest("Gujarat").getNest("Surat").makeNest("Pincode");
         template.getNest("India").getNest("Gujarat").getNest("Surat").getNest("Pincode").putValue("395009");
         System.out.println(template);

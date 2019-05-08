@@ -1,6 +1,7 @@
 import java.util.LinkedHashMap;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -36,7 +37,7 @@ class Template1 implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+/*        StringBuilder sb = new StringBuilder();
         int i1;
         i++;
         i1 = i;
@@ -49,9 +50,9 @@ class Template1 implements Serializable {
             sb.append("\n").append(loop(i1)).append("{").append("\"").append(entry.getKey()).append("\"").append(":").append(entry.getValue().toString()).append("\n").append(loop(i1)).append("}");
         }
         i--;
-        return sb.toString();
+        return sb.toString();*/
 
-/*        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         String json = "";
         try {
 
@@ -59,7 +60,7 @@ class Template1 implements Serializable {
         } catch (Exception e) {
             System.out.println("Json parssing error" + e.getMessage());
         }
-        return json;*/
+        return json;
 
 
     }
