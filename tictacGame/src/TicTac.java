@@ -13,7 +13,7 @@ public class TicTac {
     }
 
     private Scanner sc = new Scanner(System.in);
-    private char board[] = new char[9];
+    private char[] board = new char[9];
     private char turn = 'X';
     private Random random = new Random();
     private int winX = 0;
@@ -110,7 +110,7 @@ public class TicTac {
         boolean check = false;
         do {
             int r = random.nextInt(9);
-            if (r == 1 || r == 3 || r == 5 || r == 7 || r != 4) {
+            if (r != 4) {
                 r = random.nextInt(9);
             }
             if (board[r] == ' ') {

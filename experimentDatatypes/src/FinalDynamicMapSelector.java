@@ -11,7 +11,7 @@ class Template {
     private String loop(int n) {
         StringBuilder sb1 = new StringBuilder();
         for (int i = 0; i < n; i++) {
-            sb1.append("\t\t");
+            sb1.append("\t");
         }
         return sb1.toString();
     }
@@ -34,7 +34,7 @@ class Template {
         int i1;
         i++;
         i1 = i;
-        if (!this.v.equals("")) {
+        if (!v.equals("")) {
             sb.append("\"").append(this.v).append("\"");
         }
         for (Iterator<Map.Entry<String, Template>> iterator = nest.entrySet().iterator(); iterator.hasNext(); ) {
@@ -72,7 +72,7 @@ public class FinalDynamicMapSelector {
         template.getNest("India").getNest("Gujarat").getNest("Surat").makeNest("River");
         template.getNest("India").getNest("Gujarat").getNest("Surat").getNest("River").makeNest("Tapi");
         template.getNest("India").getNest("Gujarat").getNest("Surat").makeNest("Pincode");
-        template.getNest("India").getNest("Gujarat").getNest("Surat").getNest("Pincode").putValue("395009");
+        //   template.getNest("India").getNest("Gujarat").getNest("Surat").getNest("Pincode").putValue("395009");
         System.out.println(template);
     }
 }
