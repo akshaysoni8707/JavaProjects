@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class StringFormatter {
     private int number;
     private String cardDetail;
-    private StringFormatter card[] = new StringFormatter[3];
+    private StringFormatter[] card = new StringFormatter[1];
     private int counter = 0;
 
     private StringFormatter(int number, String cardDetail) {
@@ -29,14 +29,14 @@ public class StringFormatter {
         s.add(11, "");
         s.add(12, "");
         s.add(13, "");
-
+        String x = "ksdhksdfkjls asckjsdfk dcjhsdkljj";
+        String[] sub = x.split("");
+        System.out.println(Arrays.toString(sub));
         System.out.println(s + "\n length of array made : " + s.card.length);
     }
 
     private void add(int number, String cardDetail) {
-        if (counter >= 3) {
-            this.card = Arrays.copyOf(card, counter + 1);
-        }
+        this.card = Arrays.copyOf(card, counter + 1);
         card[counter++] = new StringFormatter(number, cardDetail);
     }
 

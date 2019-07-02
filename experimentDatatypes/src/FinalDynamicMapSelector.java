@@ -1,6 +1,4 @@
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 class Template {
     public static final long serialVersionUID = 1L;
@@ -49,6 +47,16 @@ class Template {
 
     }
 
+    Template find(String findString) {
+        Template foundTemplate;
+        String[] stringsplitter = findString.split("[.]");
+        foundTemplate = this.getNest(stringsplitter[0]);
+        for (int i = 1; i < stringsplitter.length; i++) {
+            foundTemplate = foundTemplate.getNest(stringsplitter[i]);
+        }
+        return foundTemplate;
+    }
+
 
 }
 
@@ -73,7 +81,8 @@ public class FinalDynamicMapSelector {
         template.getNest("India").getNest("Gujarat").getNest("Surat").getNest("River").makeNest("Tapi");
         template.getNest("India").getNest("Gujarat").getNest("Surat").makeNest("Pincode");
         //   template.getNest("India").getNest("Gujarat").getNest("Surat").getNest("Pincode").putValue("395009");
-        System.out.println(template);
+        //  System.out.println(template);
+        System.out.println(template.find("India.Rajasthan"));
     }
 }
 
